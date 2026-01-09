@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ texts.about_title }} | Wildlight Studio
+{% endblock %}
+
+{% block content %}
+<section class="about-page">
+
+    <h1>{{ texts.about_title }}</h1>
+
+    <p class="about-intro">
+        {{ texts.about_p1 }}
+    </p>
+
+    <p>
+        {{ texts.about_p2 }}
+    </p>
+
+    <p>
+        {{ texts.about_p3 }}
+    </p>
+
+    <section class="about-highlight">
+        <h2>Focus</h2>
+        <ul>
+            <li>Wildlife & bird photography</li>
+            <li>Natural habitats and conservation</li>
+            <li>Editorial & fine art work</li>
+        </ul>
+    </section>
+
+    <section class="about-cta">
+        <p>
+            If you’re interested in licensing images, purchasing prints,
+            or collaborating on a project, I’d love to hear from you.
+        </p>
+
+        <a href="/contact?lang={{ lang }}" class="cta">
+            Contact Me
+        </a>
+    </section>
+
+</section>
+{% endblock %}

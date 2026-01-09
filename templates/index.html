@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ texts.home_title }}{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>{{ texts.home_title }}</h1>
+    <p>{{ texts.home_subtitle }}</p>
+
+    <a href="/galleries?lang={{ lang }}" class="cta">
+        {{ texts.cta_galleries }}
+    </a>
+</section>
+{% endblock %}

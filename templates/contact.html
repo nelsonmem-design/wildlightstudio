@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ texts.contact_title }} | Wildlight Studio{% endblock %}
+
+{% block content %}
+<section class="contact-page">
+
+    <h1>{{ texts.contact_title }}</h1>
+
+    {% if success %}
+        <p class="contact-success">
+            {{ texts.contact_success }}
+        </p>
+    {% else %}
+        <p class="contact-intro">
+            {{ texts.contact_intro }}
+        </p>
+    {% endif %}
+
+    <form method="POST" class="contact-form">
+
+        <input type="hidden" name="photo_id" value="{{ photo }}">
+
+        {% if photo %}
+            <p class="photo-reference">
+                <strong>Photo of interest:</strong> {{ photo }}
+            </p>
+        {% endif %}
+
+        <label>Name</label>
+        <input type="text" name="name" required>
+
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <label>Message</label>
+        <textarea
+            name="message"
+            rows="5"
+            required
+            placeholder="Tell me how you plan to use the image or what you’re looking for...">
+        </textarea>
+
+        <button type="submit" class="cta">
+            {{ texts.send_request }}
+        </button>
+
+    </form>
+
+</section>
+{% endblock %}

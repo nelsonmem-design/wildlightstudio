@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ category|capitalize }} Photo {{ photo_id }} | Wildlife Photography | Wildlight Studio
+{% endblock %}
+
+{% block content %}
+<section class="photo-page">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/?lang={{ lang }}">Home</a>
+        <span>›</span>
+        <a href="/galleries?lang={{ lang }}">Galleries</a>
+        <span>›</span>
+        <a href="/gallery/{{ category }}?lang={{ lang }}">
+            {{ category|capitalize }}
+        </a>
+        <span>›</span>
+        <span class="current">Photo</span>
+    </nav>
+
+    <!-- Main Photo -->
+    <div class="photo-wrapper">
+        <img
+            src="/static/images/{{ category }}/{{ photo_id }}.jpg"
+            alt="{{ category|capitalize }} wildlife photograph {{ photo_id }} by Wildlight Studio"
+            loading="lazy">
+    </div>
+
+    <!-- Photo Info -->
+    <div class="photo-info">
+
+        <h1>{{ category|capitalize }}</h1>
+
+        <p class="photo-meta">
+            <strong>Photo ID:</strong> {{ category }}-{{ photo_id }} ·
+            <strong>Category:</strong> {{ category|capitalize }}
+        </p>
+
+        <p class="photo-caption">
+            {{ texts.contact_intro }}
+        </p>
+
+        <a href="/contact?photo={{ category }}-{{ photo_id }}&lang={{ lang }}"
+           class="cta">
+            {{ texts.send_request }}
+        </a>
+
+        <p class="photo-note">
+            © Wildlight Studio — All rights reserved.<br>
+            Licensing available for editorial, commercial, and conservation use.
+        </p>
+
+    </div>
+
+    <!-- Related Photos -->
+    {% if related_photos %}
+        <hr>
+
+        <section class="related-section">
+            <h2>Related Photos</h2>
+
+            <div class="photo-grid">
+                {% for rp in related_photos %}
+                    <a href="/photo/{{ category }}/{{ rp }}?lang={{ lang }}">
+                        <img
+                            src="/static/images/{{ category }}/{{ rp }}.jpg"
+                            alt="Related {{ category }} wildlife photo {{ rp }}"
+                            loading="lazy">
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+
+</section>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ texts.licensing_title }} | Wildlight Studio
+{% endblock %}
+
+{% block content %}
+<section class="licensing-page">
+
+    <h1>{{ texts.licensing_title }}</h1>
+
+    <p class="licensing-intro">
+        {{ texts.licensing_p1 }}
+    </p>
+
+    <p>
+        {{ texts.licensing_p2 }}
+    </p>
+
+    <section class="licensing-types">
+        <h2>Available licensing options</h2>
+
+        <ul>
+            <li><strong>Editorial:</strong> magazines, blogs, news, educational content</li>
+            <li><strong>Commercial:</strong> websites, branding, advertising, marketing</li>
+            <li><strong>Conservation & NGOs:</strong> special conditions available</li>
+            <li><strong>Fine Art Prints:</strong> personal or gallery use</li>
+        </ul>
+    </section>
+
+    <section class="licensing-process">
+        <h2>How it works</h2>
+
+        <ol>
+            <li>You choose the image</li>
+            <li>You describe how you want to use it</li>
+            <li>I’ll reply with pricing and terms</li>
+            <li>Once approved, you receive the image</li>
+        </ol>
+    </section>
+
+    <section class="licensing-cta">
+        <p>
+            {{ texts.licensing_p3 }}
+        </p>
+
+        <a href="/contact?lang={{ lang }}" class="cta">
+            {{ texts.licensing_cta }}
+        </a>
+    </section>
+
+</section>
+{% endblock %}
