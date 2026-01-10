@@ -79,7 +79,12 @@ def get_lang():
 @app.route("/", strict_slashes=False)
 def home():
     lang = get_lang()
-    return render_template("index.html", texts=TEXTS[lang], lang=lang)
+    return render_template(
+        "index.html",
+        texts=TEXTS[lang],
+        lang=lang,
+        meta_description="Wildlife and nature photography by Wildlight Studio. Licensing and fine art prints available."
+    )
 
 
 # =========================
@@ -88,19 +93,34 @@ def home():
 @app.route("/galleries", strict_slashes=False)
 def galleries():
     lang = get_lang()
-    return render_template("galleries.html", texts=TEXTS[lang], lang=lang)
+    return render_template(
+        "galleries.html",
+        texts=TEXTS[lang],
+        lang=lang,
+        meta_description="Wildlife photography galleries by Wildlight Studio. Explore birds and nature collections."
+    )
 
 
 @app.route("/about", strict_slashes=False)
 def about():
     lang = get_lang()
-    return render_template("about.html", texts=TEXTS[lang], lang=lang)
+    return render_template(
+        "about.html",
+        texts=TEXTS[lang],
+        lang=lang,
+        meta_description="About Wildlight Studio, a wildlife and nature photography project focused on birds."
+    )
 
 
 @app.route("/licensing", strict_slashes=False)
 def licensing():
     lang = get_lang()
-    return render_template("licensing.html", texts=TEXTS[lang], lang=lang)
+    return render_template(
+        "licensing.html",
+        texts=TEXTS[lang],
+        lang=lang,
+        meta_description="Wildlife photography licensing and usage information. Editorial and commercial licenses available."
+    )
 
 
 # =========================
@@ -124,10 +144,17 @@ def contact():
             success=True,
             photo=request.form.get("photo_id"),
             texts=TEXTS[lang],
-            lang=lang
+            lang=lang,
+            meta_description="Contact Wildlight Studio for wildlife photography licensing, fine art prints, or collaborations."
         )
 
-    return render_template("contact.html", photo=photo, texts=TEXTS[lang], lang=lang)
+    return render_template(
+        "contact.html",
+        photo=photo,
+        texts=TEXTS[lang],
+        lang=lang,
+        meta_description="Contact Wildlight Studio for wildlife photography licensing, fine art prints, or collaborations."
+    )
 
 
 # =========================
@@ -140,7 +167,8 @@ def gallery(category):
         "gallery.html",
         category=category,
         texts=TEXTS[lang],
-        lang=lang
+        lang=lang,
+        meta_description=f"{category.capitalize()} wildlife photography gallery by Wildlight Studio. Images available for licensing and fine art prints."
     )
 
 
@@ -165,7 +193,7 @@ def photo(category, photo_id):
         related_photos=related_photos[:4],
         texts=TEXTS[lang],
         lang=lang,
-        meta_description=f"{category.capitalize()} wildlife photograph available for licensing and fine art prints."
+        meta_description=f"{category.capitalize()} wildlife photograph available for licensing and fine art prints by Wildlight Studio."
     )
 
 
