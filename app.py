@@ -12,11 +12,14 @@ app.secret_key = os.environ.get("SECRET_KEY", "wildlight-secret-key")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 IMAGES_DIR = os.path.join(BASE_DIR, "static", "images")
 
+# =========================
+# SMTP CONFIG (Google SMTP Relay)
+# =========================
 SMTP_SERVER = "smtp-relay.gmail.com"
 SMTP_PORT = 587
+
 EMAIL_FROM = "contact@wildlightstudiocr.com"
 EMAIL_TO = "licensing@wildlightstudiocr.com"
-
 
 # =========================
 # TEXTOS INTERNACIONALIZADOS
@@ -66,7 +69,6 @@ TEXTS = {
     }
 }
 
-
 # =========================
 # UTILIDADES
 # =========================
@@ -78,7 +80,7 @@ def get_lang():
 
 
 def render_page(template, **kwargs):
-    """Render centralizado (menos repetición, más limpio)"""
+    """Render centralizado (menos duplicación)"""
     lang = get_lang()
     context = {
         "texts": TEXTS[lang],
@@ -89,7 +91,7 @@ def render_page(template, **kwargs):
 
 
 def get_related_photos(category, current_photo, limit=4):
-    """Obtiene fotos relacionadas eficientemente"""
+    """Obtiene fotos relacionadas"""
     folder = os.path.join(IMAGES_DIR, category)
     if not os.path.exists(folder):
         return []
@@ -103,7 +105,10 @@ def get_related_photos(category, current_photo, limit=4):
 
 
 def send_email(name, email, message, photo=None):
-    """Envío seguro de correo (no rompe el sitio si falla)"""
+    """
+    Envío de correo seguro vía Google SMTP Relay
+    Nunca rompe la app
+    """
     try:
         msg = EmailMessage()
         msg["Subject"] = "New contact request | Wildlight Studio"
@@ -112,8 +117,7 @@ def send_email(name, email, message, photo=None):
         msg["Reply-To"] = email
 
         msg.set_content(
-            f"""
-New contact request from Wildlight Studio
+            f"""New contact request from Wildlight Studio
 
 Name: {name}
 Email: {email}
@@ -131,7 +135,6 @@ Message:
         print("✅ Email sent successfully")
 
     except Exception as e:
-        # 🔴 NO romper la app
         print("❌ EMAIL ERROR:")
         print(e)
 
