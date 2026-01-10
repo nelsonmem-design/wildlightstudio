@@ -103,15 +103,16 @@ def get_related_photos(category, current_photo, limit=4):
 
 
 def send_email(name, email, message, photo=None):
-    """Envía correo usando Gmail SMTP Relay"""
-    msg = EmailMessage()
-    msg["Subject"] = "New contact request | Wildlight Studio"
-    msg["From"] = EMAIL_FROM
-    msg["To"] = EMAIL_TO
-    msg["Reply-To"] = email
+    """Envío seguro de correo (no rompe el sitio si falla)"""
+    try:
+        msg = EmailMessage()
+        msg["Subject"] = "New contact request | Wildlight Studio"
+        msg["From"] = EMAIL_FROM
+        msg["To"] = EMAIL_TO
+        msg["Reply-To"] = email
 
-    msg.set_content(
-        f"""
+        msg.set_content(
+            f"""
 New contact request from Wildlight Studio
 
 Name: {name}
@@ -121,11 +122,18 @@ Photo: {photo or "N/A"}
 Message:
 {message}
 """
-    )
+        )
 
-    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-        server.starttls()
-        server.send_message(msg)
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10) as server:
+            server.starttls()
+            server.send_message(msg)
+
+        print("✅ Email sent successfully")
+
+    except Exception as e:
+        # 🔴 NO romper la app
+        print("❌ EMAIL ERROR:")
+        print(e)
 
 
 # =========================
