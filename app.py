@@ -7,10 +7,15 @@ from email.message import EmailMessage
 # APP CONFIG
 # =========================
 app = Flask(__name__)
-app.secret_key = "wildlight-secret-key"
+app.secret_key = os.environ.get("SECRET_KEY", "wildlight-secret-key")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 IMAGES_DIR = os.path.join(BASE_DIR, "static", "images")
+
+SMTP_SERVER = "smtp-relay.gmail.com"
+SMTP_PORT = 587
+EMAIL_FROM = "contact@wildlightstudiocr.com"
+EMAIL_TO = "licensing@wildlightstudiocr.com"
 
 
 # =========================
@@ -66,25 +71,25 @@ TEXTS = {
 # UTILIDADES
 # =========================
 def get_lang():
-    """Detecta y guarda idioma en sesión"""
+    """Detecta idioma desde URL o sesión"""
     if "lang" in request.args and request.args["lang"] in TEXTS:
         session["lang"] = request.args["lang"]
     return session.get("lang", "en")
 
 
 def render_page(template, **kwargs):
-    """Render centralizado (menos duplicación, más limpio)"""
+    """Render centralizado (menos repetición, más limpio)"""
     lang = get_lang()
-    base_context = {
+    context = {
         "texts": TEXTS[lang],
         "lang": lang
     }
-    base_context.update(kwargs)
-    return render_template(template, **base_context)
+    context.update(kwargs)
+    return render_template(template, **context)
 
 
 def get_related_photos(category, current_photo, limit=4):
-    """Obtiene fotos relacionadas de forma eficiente"""
+    """Obtiene fotos relacionadas eficientemente"""
     folder = os.path.join(IMAGES_DIR, category)
     if not os.path.exists(folder):
         return []
@@ -98,25 +103,27 @@ def get_related_photos(category, current_photo, limit=4):
 
 
 def send_email(name, email, message, photo=None):
-    """Envío de correo vía Gmail SMTP Relay"""
+    """Envía correo usando Gmail SMTP Relay"""
     msg = EmailMessage()
-    msg["Subject"] = "New contact from Wildlight Studio"
-    msg["From"] = "contact@wildlightstudiocr.com"
-    msg["To"] = "licensing@wildlightstudiocr.com"
+    msg["Subject"] = "New contact request | Wildlight Studio"
+    msg["From"] = EMAIL_FROM
+    msg["To"] = EMAIL_TO
     msg["Reply-To"] = email
 
-    msg.set_content(f"""
+    msg.set_content(
+        f"""
 New contact request from Wildlight Studio
 
 Name: {name}
 Email: {email}
-Photo: {photo or 'N/A'}
+Photo: {photo or "N/A"}
 
 Message:
 {message}
-""")
+"""
+    )
 
-    with smtplib.SMTP("smtp-relay.gmail.com", 587) as server:
+    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
         server.starttls()
         server.send_message(msg)
 
@@ -162,10 +169,10 @@ def contact():
 
     if request.method == "POST":
         send_email(
-            request.form.get("name"),
-            request.form.get("email"),
-            request.form.get("message"),
-            request.form.get("photo_id")
+            name=request.form.get("name"),
+            email=request.form.get("email"),
+            message=request.form.get("message"),
+            photo=request.form.get("photo_id")
         )
 
         return render_page(
@@ -205,7 +212,7 @@ def photo(category, photo_id):
 
 
 # =========================
-# ARRANQUE
+# ARRANQUE LOCAL
 # =========================
 if __name__ == "__main__":
     app.run(debug=True)
