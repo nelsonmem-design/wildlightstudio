@@ -1,36 +1,47 @@
 <!DOCTYPE html>
 <html lang="{{ lang }}">
 <head>
+    <!-- Charset -->
     <meta charset="UTF-8">
-    <meta name="description" content="{{ meta_description | default('Wildlife and nature photography by Wildlight Studio') }}">
-    <meta name="description"
-      content="{{ meta_description | default('Wildlife and nature photography available for licensing and fine art prints.') }}">
 
+    <!-- Google Search Console verification -->
+    <meta name="google-site-verification"
+          content="ogOb-PZLRnNWNxZn_o5Sc3ZCzRhF9A6DBZH364vW4eo" />
+
+    <!-- SEO: Meta description (solo UNA) -->
+    <meta name="description"
+          content="{{ meta_description | default(
+          'Wildlife and nature photography by Wildlight Studio. Licensing and fine art prints available.'
+          ) }}">
+
+    <!-- Title -->
     <title>{% block title %}Wildlight Studio{% endblock %}</title>
 
+    <!-- Styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
 <nav class="navbar">
     <div class="brand">Wildlight Studio</div>
 
     <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/galleries">Galleries</a>
-        <a href="/licensing">Licensing</a>
-        <a href="/about">About</a>
-        <a href="/contact">Contact</a>
+        <a href="/?lang={{ lang }}">Home</a>
+        <a href="/galleries?lang={{ lang }}">Galleries</a>
+        <a href="/licensing?lang={{ lang }}">Licensing</a>
+        <a href="/about?lang={{ lang }}">About</a>
+        <a href="/contact?lang={{ lang }}">Contact</a>
     </div>
 
     <div class="language-switch">
-    <a href="?lang=en">EN</a> | <a href="?lang=es">ES</a>
-</div>
-
+        <a href="?lang=en">EN</a> | <a href="?lang=es">ES</a>
+    </div>
 </nav>
 
 <main>
