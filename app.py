@@ -13,13 +13,16 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 IMAGES_DIR = os.path.join(BASE_DIR, "static", "images")
 
 # =========================
-# SMTP CONFIG (Google SMTP Relay)
+# SMTP CONFIG (GOOGLE SMTP AUTH)
 # =========================
-SMTP_SERVER = "smtp-relay.gmail.com"
+SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 
 EMAIL_FROM = "contact@wildlightstudiocr.com"
 EMAIL_TO = "licensing@wildlightstudiocr.com"
+
+SMTP_USER = os.environ.get("SMTP_USER", EMAIL_FROM)
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")  # App Password (OBLIGATORIO)
 
 # =========================
 # TEXTOS INTERNACIONALIZADOS
@@ -73,14 +76,12 @@ TEXTS = {
 # UTILIDADES
 # =========================
 def get_lang():
-    """Detecta idioma desde URL o sesión"""
     if "lang" in request.args and request.args["lang"] in TEXTS:
         session["lang"] = request.args["lang"]
     return session.get("lang", "en")
 
 
 def render_page(template, **kwargs):
-    """Render centralizado (menos duplicación)"""
     lang = get_lang()
     context = {
         "texts": TEXTS[lang],
@@ -91,7 +92,6 @@ def render_page(template, **kwargs):
 
 
 def get_related_photos(category, current_photo, limit=4):
-    """Obtiene fotos relacionadas"""
     folder = os.path.join(IMAGES_DIR, category)
     if not os.path.exists(folder):
         return []
@@ -106,9 +106,13 @@ def get_related_photos(category, current_photo, limit=4):
 
 def send_email(name, email, message, photo=None):
     """
-    Envío de correo seguro vía Google SMTP Relay
-    Nunca rompe la app
+    Envío de correo vía Google SMTP AUTH
+    Nunca rompe la app si falla
     """
+    if not SMTP_PASSWORD:
+        print("❌ SMTP_PASSWORD no configurado")
+        return
+
     try:
         msg = EmailMessage()
         msg["Subject"] = "New contact request | Wildlight Studio"
@@ -128,8 +132,9 @@ Message:
 """
         )
 
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10) as server:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=15) as server:
             server.starttls()
+            server.login(SMTP_USER, SMTP_PASSWORD)
             server.send_message(msg)
 
         print("✅ Email sent successfully")
@@ -137,7 +142,6 @@ Message:
     except Exception as e:
         print("❌ EMAIL ERROR:")
         print(e)
-
 
 # =========================
 # RUTAS
@@ -221,9 +225,8 @@ def photo(category, photo_id):
         meta_description=f"{category.capitalize()} wildlife photograph available for licensing and fine art prints by Wildlight Studio."
     )
 
-
 # =========================
-# ARRANQUE LOCAL
+# ARRANQUE
 # =========================
 if __name__ == "__main__":
     app.run(debug=True)
