@@ -1,11 +1,16 @@
 from flask import Flask, render_template, request, session
 import os
+import smtplib
+from email.message import EmailMessage
 
 # =========================
 # APP CONFIG
 # =========================
 app = Flask(__name__)
 app.secret_key = "wildlight-secret-key"
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+IMAGES_DIR = os.path.join(BASE_DIR, "static", "images")
 
 
 # =========================
@@ -58,147 +63,149 @@ TEXTS = {
 
 
 # =========================
-# UTILIDAD IDIOMA
+# UTILIDADES
 # =========================
 def get_lang():
-    if "lang" in request.args:
-        lang = request.args.get("lang")
-        if lang in TEXTS:
-            session["lang"] = lang
-            return lang
+    """Detecta y guarda idioma en sesión"""
+    if "lang" in request.args and request.args["lang"] in TEXTS:
+        session["lang"] = request.args["lang"]
+    return session.get("lang", "en")
 
-    if "lang" in session:
-        return session["lang"]
 
-    return "en"
+def render_page(template, **kwargs):
+    """Render centralizado (menos duplicación, más limpio)"""
+    lang = get_lang()
+    base_context = {
+        "texts": TEXTS[lang],
+        "lang": lang
+    }
+    base_context.update(kwargs)
+    return render_template(template, **base_context)
+
+
+def get_related_photos(category, current_photo, limit=4):
+    """Obtiene fotos relacionadas de forma eficiente"""
+    folder = os.path.join(IMAGES_DIR, category)
+    if not os.path.exists(folder):
+        return []
+
+    photos = [
+        f.replace(".jpg", "")
+        for f in os.listdir(folder)
+        if f.endswith(".jpg") and f != f"{current_photo}.jpg"
+    ]
+    return photos[:limit]
+
+
+def send_email(name, email, message, photo=None):
+    """Envío de correo vía Gmail SMTP Relay"""
+    msg = EmailMessage()
+    msg["Subject"] = "New contact from Wildlight Studio"
+    msg["From"] = "contact@wildlightstudiocr.com"
+    msg["To"] = "licensing@wildlightstudiocr.com"
+    msg["Reply-To"] = email
+
+    msg.set_content(f"""
+New contact request from Wildlight Studio
+
+Name: {name}
+Email: {email}
+Photo: {photo or 'N/A'}
+
+Message:
+{message}
+""")
+
+    with smtplib.SMTP("smtp-relay.gmail.com", 587) as server:
+        server.starttls()
+        server.send_message(msg)
 
 
 # =========================
-# HOME
+# RUTAS
 # =========================
 @app.route("/", strict_slashes=False)
 def home():
-    lang = get_lang()
-    return render_template(
+    return render_page(
         "index.html",
-        texts=TEXTS[lang],
-        lang=lang,
         meta_description="Wildlife and nature photography by Wildlight Studio. Licensing and fine art prints available."
     )
 
 
-# =========================
-# PÁGINAS PRINCIPALES
-# =========================
 @app.route("/galleries", strict_slashes=False)
 def galleries():
-    lang = get_lang()
-    return render_template(
+    return render_page(
         "galleries.html",
-        texts=TEXTS[lang],
-        lang=lang,
         meta_description="Wildlife photography galleries by Wildlight Studio. Explore birds and nature collections."
     )
 
 
 @app.route("/about", strict_slashes=False)
 def about():
-    lang = get_lang()
-    return render_template(
+    return render_page(
         "about.html",
-        texts=TEXTS[lang],
-        lang=lang,
         meta_description="About Wildlight Studio, a wildlife and nature photography project focused on birds."
     )
 
 
 @app.route("/licensing", strict_slashes=False)
 def licensing():
-    lang = get_lang()
-    return render_template(
+    return render_page(
         "licensing.html",
-        texts=TEXTS[lang],
-        lang=lang,
         meta_description="Wildlife photography licensing and usage information. Editorial and commercial licenses available."
     )
 
 
-# =========================
-# CONTACTO
-# =========================
 @app.route("/contact", methods=["GET", "POST"], strict_slashes=False)
 def contact():
-    lang = get_lang()
     photo = request.args.get("photo")
 
     if request.method == "POST":
-        print("----- NEW REQUEST -----")
-        print("Name:", request.form.get("name"))
-        print("Email:", request.form.get("email"))
-        print("Photo:", request.form.get("photo_id"))
-        print("Message:", request.form.get("message"))
-        print("-----------------------")
+        send_email(
+            request.form.get("name"),
+            request.form.get("email"),
+            request.form.get("message"),
+            request.form.get("photo_id")
+        )
 
-        return render_template(
+        return render_page(
             "contact.html",
             success=True,
             photo=request.form.get("photo_id"),
-            texts=TEXTS[lang],
-            lang=lang,
             meta_description="Contact Wildlight Studio for wildlife photography licensing, fine art prints, or collaborations."
         )
 
-    return render_template(
+    return render_page(
         "contact.html",
         photo=photo,
-        texts=TEXTS[lang],
-        lang=lang,
         meta_description="Contact Wildlight Studio for wildlife photography licensing, fine art prints, or collaborations."
     )
 
 
-# =========================
-# GALERÍA POR CATEGORÍA
-# =========================
 @app.route("/gallery/<category>", strict_slashes=False)
 def gallery(category):
-    lang = get_lang()
-    return render_template(
+    return render_page(
         "gallery.html",
         category=category,
-        texts=TEXTS[lang],
-        lang=lang,
-        meta_description=f"{category.capitalize()} wildlife photography gallery by Wildlight Studio. Images available for licensing and fine art prints."
+        meta_description=f"{category.capitalize()} wildlife photography gallery by Wildlight Studio."
     )
 
 
-# =========================
-# FOTO INDIVIDUAL
-# =========================
 @app.route("/photo/<category>/<photo_id>", strict_slashes=False)
 def photo(category, photo_id):
-    lang = get_lang()
-    folder = os.path.join("static", "images", category)
+    related_photos = get_related_photos(category, photo_id)
 
-    related_photos = []
-    if os.path.exists(folder):
-        for f in os.listdir(folder):
-            if f.endswith(".jpg") and f != f"{photo_id}.jpg":
-                related_photos.append(f.replace(".jpg", ""))
-
-    return render_template(
+    return render_page(
         "photo.html",
         category=category,
         photo_id=photo_id,
-        related_photos=related_photos[:4],
-        texts=TEXTS[lang],
-        lang=lang,
+        related_photos=related_photos,
         meta_description=f"{category.capitalize()} wildlife photograph available for licensing and fine art prints by Wildlight Studio."
     )
 
 
 # =========================
-# ARRANQUE LOCAL
+# ARRANQUE
 # =========================
 if __name__ == "__main__":
     app.run(debug=True)
