@@ -1,21 +1,21 @@
 from flask import Flask, render_template, request, session, Response
 import os
 import smtplib
-from email.message import EmailMessage
 import datetime
+from email.message import EmailMessage
 
-# =========================
+# ==================================================
 # APP CONFIG
-# =========================
+# ==================================================
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "wildlight-secret-key")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 IMAGES_DIR = os.path.join(BASE_DIR, "static", "images")
 
-# =========================
+# ==================================================
 # SMTP CONFIG (GMAIL SMTP AUTH + APP PASSWORD)
-# =========================
+# ==================================================
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 
@@ -23,11 +23,14 @@ SMTP_USER = os.environ.get("SMTP_USER", "contact@wildlightstudiocr.com")
 SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")  # App Password (16 dígitos)
 
 EMAIL_FROM = SMTP_USER
-EMAIL_TO = "licensing@wildlightstudiocr.com"
+EMAIL_TO = [
+    "licensing@wildlightstudiocr.com",
+    "contact@wildlightstudiocr.com"
+]
 
-# =========================
+# ==================================================
 # TEXTOS INTERNACIONALIZADOS
-# =========================
+# ==================================================
 TEXTS = {
     "en": {
         "home_title": "Wildlight Studio",
@@ -67,9 +70,9 @@ TEXTS = {
     }
 }
 
-# =========================
+# ==================================================
 # UTILIDADES
-# =========================
+# ==================================================
 def get_lang():
     if "lang" in request.args and request.args["lang"] in TEXTS:
         session["lang"] = request.args["lang"]
@@ -108,7 +111,7 @@ def send_email(name, email, message, photo=None):
         msg = EmailMessage()
         msg["Subject"] = "New contact request | Wildlight Studio"
         msg["From"] = EMAIL_FROM
-        msg["To"] = EMAIL_TO
+        msg["To"] = ", ".join(EMAIL_TO)
         msg["Reply-To"] = email
 
         msg.set_content(f"""
@@ -132,9 +135,9 @@ Message:
     except Exception as e:
         print("❌ EMAIL ERROR:", e)
 
-# =========================
+# ==================================================
 # SITEMAP.XML
-# =========================
+# ==================================================
 @app.route("/sitemap.xml", strict_slashes=False)
 def sitemap():
     base_url = "https://wildlightstudiocr.com"
@@ -142,19 +145,19 @@ def sitemap():
     pages = []
 
     static_pages = [
-        {"path": "", "priority": "1.0"},
-        {"path": "galleries", "priority": "0.9"},
-        {"path": "about", "priority": "0.7"},
-        {"path": "licensing", "priority": "0.8"},
-        {"path": "contact", "priority": "0.6"},
+        ("", "1.0"),
+        ("galleries", "0.9"),
+        ("about", "0.7"),
+        ("licensing", "0.8"),
+        ("contact", "0.6"),
     ]
 
-    for page in static_pages:
+    for path, priority in static_pages:
         pages.append({
-            "loc": f"{base_url}/{page['path']}",
+            "loc": f"{base_url}/{path}",
             "lastmod": today,
             "changefreq": "weekly",
-            "priority": page["priority"]
+            "priority": priority
         })
 
     if os.path.exists(IMAGES_DIR):
@@ -182,45 +185,40 @@ def sitemap():
     xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
 
     for p in pages:
-        xml.append("<url>")
-        xml.append(f"<loc>{p['loc']}</loc>")
-        xml.append(f"<lastmod>{p['lastmod']}</lastmod>")
-        xml.append(f"<changefreq>{p['changefreq']}</changefreq>")
-        xml.append(f"<priority>{p['priority']}</priority>")
-        xml.append("</url>")
+        xml.extend([
+            "<url>",
+            f"<loc>{p['loc']}</loc>",
+            f"<lastmod>{p['lastmod']}</lastmod>",
+            f"<changefreq>{p['changefreq']}</changefreq>",
+            f"<priority>{p['priority']}</priority>",
+            "</url>"
+        ])
 
     xml.append("</urlset>")
-
     return Response("\n".join(xml), mimetype="application/xml")
 
-# =========================
+# ==================================================
 # RUTAS
-# =========================
-@app.route("/", strict_slashes=False)
+# ==================================================
+@app.route("/")
 def home():
     return render_page("index.html",
-        meta_description="Wildlife and nature photography by Wildlight Studio. Licensing and fine art prints available."
+        meta_description="Wildlife and nature photography by Wildlight Studio."
     )
 
-@app.route("/galleries", strict_slashes=False)
+@app.route("/galleries")
 def galleries():
-    return render_page("galleries.html",
-        meta_description="Wildlife photography galleries by Wildlight Studio."
-    )
+    return render_page("galleries.html")
 
-@app.route("/about", strict_slashes=False)
+@app.route("/about")
 def about():
-    return render_page("about.html",
-        meta_description="About Wildlight Studio, wildlife and nature photography."
-    )
+    return render_page("about.html")
 
-@app.route("/licensing", strict_slashes=False)
+@app.route("/licensing")
 def licensing():
-    return render_page("licensing.html",
-        meta_description="Wildlife photography licensing and usage information."
-    )
+    return render_page("licensing.html")
 
-@app.route("/contact", methods=["GET", "POST"], strict_slashes=False)
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
     photo = request.args.get("photo")
 
@@ -235,11 +233,11 @@ def contact():
 
     return render_page("contact.html", photo=photo)
 
-@app.route("/gallery/<category>", strict_slashes=False)
+@app.route("/gallery/<category>")
 def gallery(category):
     return render_page("gallery.html", category=category)
 
-@app.route("/photo/<category>/<photo_id>", strict_slashes=False)
+@app.route("/photo/<category>/<photo_id>")
 def photo(category, photo_id):
     return render_page(
         "photo.html",
@@ -248,8 +246,8 @@ def photo(category, photo_id):
         related_photos=get_related_photos(category, photo_id)
     )
 
-# =========================
+# ==================================================
 # START
-# =========================
+# ==================================================
 if __name__ == "__main__":
     app.run(debug=True)
