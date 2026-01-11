@@ -13,16 +13,16 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 IMAGES_DIR = os.path.join(BASE_DIR, "static", "images")
 
 # =========================
-# SMTP CONFIG (GOOGLE SMTP AUTH)
+# SMTP CONFIG (GMAIL SMTP AUTH + APP PASSWORD)
 # =========================
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 
-EMAIL_FROM = "contact@wildlightstudiocr.com"
-EMAIL_TO = "licensing@wildlightstudiocr.com"
+SMTP_USER = os.environ.get("SMTP_USER", "contact@wildlightstudiocr.com")
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")  # 🔐 App Password (16 dígitos)
 
-SMTP_USER = os.environ.get("SMTP_USER", EMAIL_FROM)
-SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")  # App Password (OBLIGATORIO)
+EMAIL_FROM = SMTP_USER
+EMAIL_TO = "licensing@wildlightstudiocr.com"
 
 # =========================
 # TEXTOS INTERNACIONALIZADOS
@@ -32,18 +32,15 @@ TEXTS = {
         "home_title": "Wildlight Studio",
         "home_subtitle": "Wildlife & nature photography",
         "cta_galleries": "Explore Galleries",
-
         "about_title": "About Wildlight Studio",
         "about_p1": "Wildlight Studio is a personal photography project dedicated to wildlife.",
         "about_p2": "The work focuses especially on birds and their natural habitats.",
         "about_p3": "Photography is about patience, respect, and light.",
-
         "licensing_title": "Licensing & Usage",
         "licensing_p1": "All photographs are protected by copyright.",
         "licensing_p2": "Images are available for editorial and commercial use.",
         "licensing_p3": "Contact me for licensing details.",
         "licensing_cta": "Contact for Licensing",
-
         "contact_title": "Contact",
         "contact_intro": "Interested in licensing an image or purchasing a print?",
         "contact_success": "Thank you for your message. I’ll contact you shortly.",
@@ -53,18 +50,15 @@ TEXTS = {
         "home_title": "Wildlight Studio",
         "home_subtitle": "Fotografía de naturaleza y vida silvestre",
         "cta_galleries": "Explorar Galerías",
-
         "about_title": "Sobre Wildlight Studio",
         "about_p1": "Wildlight Studio es un proyecto personal dedicado a la fotografía de vida silvestre.",
         "about_p2": "El trabajo se enfoca especialmente en aves y sus hábitats naturales.",
         "about_p3": "La fotografía trata sobre paciencia, respeto y luz.",
-
         "licensing_title": "Licencias y Uso",
         "licensing_p1": "Todas las fotografías están protegidas por derechos de autor.",
         "licensing_p2": "Las imágenes están disponibles para uso editorial y comercial.",
         "licensing_p3": "Contáctame para detalles de licencias.",
         "licensing_cta": "Contacto para licencias",
-
         "contact_title": "Contacto",
         "contact_intro": "¿Interesado en licenciar una imagen o comprar una impresión?",
         "contact_success": "Gracias por tu mensaje. Me pondré en contacto contigo pronto.",
@@ -105,12 +99,9 @@ def get_related_photos(category, current_photo, limit=4):
 
 
 def send_email(name, email, message, photo=None):
-    """
-    Envío de correo vía Google SMTP AUTH
-    Nunca rompe la app si falla
-    """
+    """Envío de correo con Gmail SMTP + App Password"""
     if not SMTP_PASSWORD:
-        print("❌ SMTP_PASSWORD no configurado")
+        print("❌ SMTP_PASSWORD no configurado en Render")
         return
 
     try:
@@ -132,7 +123,7 @@ Message:
 """
         )
 
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=15) as server:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
             server.starttls()
             server.login(SMTP_USER, SMTP_PASSWORD)
             server.send_message(msg)
@@ -140,8 +131,7 @@ Message:
         print("✅ Email sent successfully")
 
     except Exception as e:
-        print("❌ EMAIL ERROR:")
-        print(e)
+        print("❌ EMAIL ERROR:", e)
 
 # =========================
 # RUTAS
@@ -224,6 +214,7 @@ def photo(category, photo_id):
         related_photos=related_photos,
         meta_description=f"{category.capitalize()} wildlife photograph available for licensing and fine art prints by Wildlight Studio."
     )
+
 
 # =========================
 # ARRANQUE
