@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{ category|capitalize }} Photo {{ photo_id }} | Wildlife Photography | Wildlight Studio
+{{ category|capitalize }} Wildlife Photo {{ photo_id }} | Licensing & Fine Art Prints | Wildlight Studio
 {% endblock %}
 
 {% block content %}
-<section class="photo-page">
+<section class="photo-page" itemscope itemtype="https://schema.org/ImageObject">
 
     <!-- Breadcrumb -->
     <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -24,21 +24,32 @@
     <div class="photo-wrapper">
         <img
             src="/static/images/{{ category }}/{{ photo_id }}.jpg"
+            srcset="
+                /static/images/{{ category }}/{{ photo_id }}.jpg 1200w
+            "
+            sizes="(max-width: 768px) 100vw, 1200px"
             alt="{{ category|capitalize }} wildlife photograph {{ photo_id }} by Wildlight Studio"
-            loading="lazy">
+            loading="lazy"
+            itemprop="contentUrl">
+
+        <meta itemprop="name" content="{{ category|capitalize }} Wildlife Photo {{ photo_id }}">
+        <meta itemprop="author" content="Wildlight Studio">
+        <meta itemprop="license" content="https://wildlightstudiocr.com/licensing">
     </div>
 
     <!-- Photo Info -->
     <div class="photo-info">
 
-        <h1>{{ category|capitalize }}</h1>
+        <h1 itemprop="headline">
+            {{ category|capitalize }} Wildlife Photography
+        </h1>
 
         <p class="photo-meta">
             <strong>Photo ID:</strong> {{ category }}-{{ photo_id }} ·
             <strong>Category:</strong> {{ category|capitalize }}
         </p>
 
-        <p class="photo-caption">
+        <p class="photo-caption" itemprop="description">
             {{ texts.contact_intro }}
         </p>
 
@@ -49,7 +60,7 @@
 
         <p class="photo-note">
             © Wildlight Studio — All rights reserved.<br>
-            Licensing available for editorial, commercial, and conservation use.
+            Licensing available for editorial, commercial, conservation, and educational use.
         </p>
 
     </div>
@@ -66,7 +77,7 @@
                     <a href="/photo/{{ category }}/{{ rp }}?lang={{ lang }}">
                         <img
                             src="/static/images/{{ category }}/{{ rp }}.jpg"
-                            alt="Related {{ category }} wildlife photo {{ rp }}"
+                            alt="Related {{ category|capitalize }} wildlife photo {{ rp }} by Wildlight Studio"
                             loading="lazy">
                     </a>
                 {% endfor %}

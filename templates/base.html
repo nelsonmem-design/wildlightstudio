@@ -1,37 +1,54 @@
 <!DOCTYPE html>
-<html lang="{{ lang }}">
+<html lang="{{ lang | default('en') }}">
 <head>
-    <!-- Charset -->
+
+    <!-- =========================
+         BASIC META
+    ========================= -->
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Google Search Console verification -->
+    <!-- =========================
+         GOOGLE SEARCH CONSOLE
+    ========================= -->
     <meta name="google-site-verification"
-          content="ogOb-PZLRnNWNxZn_o5Sc3ZCzRhF9A6DBZH364vW4eo" />
-    <meta name="description"
-      content="{{ meta_description | default(
-      'Wildlife and nature photography by Wildlight Studio. Licensing and fine art prints available.'
-      ) }}">
+          content="ogOb-PZLRnNWNxZn_o5Sc3ZCzRhF9A6DBZH364vW4eo">
 
-    <!-- SEO: Meta description (solo UNA) -->
+    <!-- =========================
+         SEO
+    ========================= -->
     <meta name="description"
           content="{{ meta_description | default(
           'Wildlife and nature photography by Wildlight Studio. Licensing and fine art prints available.'
           ) }}">
 
-    <!-- Title -->
-    <title>{% block title %}Wildlight Studio{% endblock %}</title>
+    <link rel="canonical" href="https://wildlightstudiocr.com{{ request.path }}">
 
-    <!-- Styles -->
+    <title>
+        {% block title %}
+            Wildlight Studio | Wildlife & Nature Photography
+        {% endblock %}
+    </title>
+
+    <!-- =========================
+         STYLES
+    ========================= -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-    <!-- Fonts -->
+    <!-- =========================
+         FONTS
+    ========================= -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
 
+<!-- =========================
+     NAVBAR
+========================= -->
 <nav class="navbar">
     <div class="brand">Wildlight Studio</div>
 
@@ -48,6 +65,9 @@
     </div>
 </nav>
 
+<!-- =========================
+     MAIN CONTENT
+========================= -->
 <main>
     {% block content %}{% endblock %}
 </main>

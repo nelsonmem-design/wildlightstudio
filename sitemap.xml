@@ -38,4 +38,35 @@
         <priority>0.6</priority>
     </url>
 
+    <!-- PHOTO PAGE: BIRDS -->
+    <url>
+        <loc>https://wildlightstudiocr.com/photo/birds/bird1</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+
+        <image:image>
+            <image:loc>
+                https://wildlightstudiocr.com/static/images/birds/bird1.jpg
+            </image:loc>
+            <image:caption>
+                Bird wildlife photography in Costa Rica by Wildlight Studio
+            </image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://wildlightstudiocr.com/photo/birds/bird2</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+
+        <image:image>
+            <image:loc>
+                https://wildlightstudiocr.com/static/images/birds/bird2.jpg
+            </image:loc>
+            <image:caption>
+                Bird wildlife photography available for licensing by Wildlight Studio
+            </image:caption>
+        </image:image>
+    </url>
+
 </urlset>

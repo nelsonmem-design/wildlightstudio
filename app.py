@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, session
 import os
 import smtplib
 from email.message import EmailMessage
+from flask import Response
+import datetime
 
 # =========================
 # APP CONFIG
@@ -136,6 +138,70 @@ Message:
 # =========================
 # RUTAS
 # =========================
+
+@app.route("/sitemap.xml", strict_slashes=False)
+def sitemap():
+    pages = []
+
+    base_url = "https://wildlightstudiocr.com"
+    today = datetime.date.today().isoformat()
+
+    # Páginas principales
+    static_pages = [
+        "",
+        "galleries",
+        "about",
+        "licensing",
+        "contact"
+    ]
+
+    for page in static_pages:
+        pages.append({
+            "loc": f"{base_url}/{page}",
+            "lastmod": today,
+            "changefreq": "weekly",
+            "priority": "0.8"
+        })
+
+    # Galerías y fotos
+    if os.path.exists(IMAGES_DIR):
+        for category in os.listdir(IMAGES_DIR):
+            category_path = os.path.join(IMAGES_DIR, category)
+
+            if os.path.isdir(category_path):
+                # Página de galería
+                pages.append({
+                    "loc": f"{base_url}/gallery/{category}",
+                    "lastmod": today,
+                    "changefreq": "weekly",
+                    "priority": "0.9"
+                })
+
+                # Fotos individuales
+                for img in os.listdir(category_path):
+                    if img.endswith(".jpg"):
+                        photo_id = img.replace(".jpg", "")
+                        pages.append({
+                            "loc": f"{base_url}/photo/{category}/{photo_id}",
+                            "lastmod": today,
+                            "changefreq": "monthly",
+                            "priority": "0.7"
+                        })
+
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>']
+    xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+
+    for page in pages:
+        xml.append("<url>")
+        xml.append(f"<loc>{page['loc']}</loc>")
+        xml.append(f"<lastmod>{page['lastmod']}</lastmod>")
+        xml.append(f"<changefreq>{page['changefreq']}</changefreq>")
+        xml.append(f"<priority>{page['priority']}</priority>")
+        xml.append("</url>")
+
+    xml.append("</urlset>")
+
+    return Response("\n".join(xml), mimetype="application/xml")
 @app.route("/", strict_slashes=False)
 def home():
     return render_page(
