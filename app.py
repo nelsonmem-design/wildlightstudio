@@ -103,13 +103,23 @@ def get_related_photos(category, current_photo, limit=4):
 
 
 def send_email(name, email, message, photo=None):
+    """
+    Envía el correo usando Gmail SMTP AUTH
+    El asunto se genera dinámicamente según la foto de interés
+    """
     if not SMTP_PASSWORD:
         print("❌ SMTP_PASSWORD no configurado")
         return
 
     try:
+        # Asunto dinámico
+        if photo:
+            subject = f"License request – {photo} | Wildlight Studio"
+        else:
+            subject = "General inquiry | Wildlight Studio"
+
         msg = EmailMessage()
-        msg["Subject"] = "New contact request | Wildlight Studio"
+        msg["Subject"] = subject
         msg["From"] = EMAIL_FROM
         msg["To"] = ", ".join(EMAIL_TO)
         msg["Reply-To"] = email
@@ -119,7 +129,7 @@ New contact request from Wildlight Studio
 
 Name: {name}
 Email: {email}
-Photo: {photo or "N/A"}
+Photo of interest: {photo or "N/A"}
 
 Message:
 {message}
@@ -130,10 +140,11 @@ Message:
             server.login(SMTP_USER, SMTP_PASSWORD)
             server.send_message(msg)
 
-        print("✅ Email sent successfully")
+        print(f"✅ Email sent successfully | Subject: {subject}")
 
     except Exception as e:
         print("❌ EMAIL ERROR:", e)
+
 
 # ==================================================
 # SITEMAP.XML
