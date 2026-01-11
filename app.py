@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, Response
 import os
 import smtplib
 from email.message import EmailMessage
-from flask import Response
 import datetime
 
 # =========================
@@ -21,7 +20,7 @@ SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 
 SMTP_USER = os.environ.get("SMTP_USER", "contact@wildlightstudiocr.com")
-SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")  # 🔐 App Password (16 dígitos)
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")  # App Password (16 dígitos)
 
 EMAIL_FROM = SMTP_USER
 EMAIL_TO = "licensing@wildlightstudiocr.com"
@@ -94,16 +93,15 @@ def get_related_photos(category, current_photo, limit=4):
 
     photos = [
         f.replace(".jpg", "")
-        for f in os.listdir(folder)
-        if f.endswith(".jpg") and f != f"{current_photo}.jpg"
+        for f in sorted(os.listdir(folder))
+        if f.lower().endswith(".jpg") and f != f"{current_photo}.jpg"
     ]
     return photos[:limit]
 
 
 def send_email(name, email, message, photo=None):
-    """Envío de correo con Gmail SMTP + App Password"""
     if not SMTP_PASSWORD:
-        print("❌ SMTP_PASSWORD no configurado en Render")
+        print("❌ SMTP_PASSWORD no configurado")
         return
 
     try:
@@ -113,8 +111,8 @@ def send_email(name, email, message, photo=None):
         msg["To"] = EMAIL_TO
         msg["Reply-To"] = email
 
-        msg.set_content(
-            f"""New contact request from Wildlight Studio
+        msg.set_content(f"""
+New contact request from Wildlight Studio
 
 Name: {name}
 Email: {email}
@@ -122,10 +120,9 @@ Photo: {photo or "N/A"}
 
 Message:
 {message}
-"""
-        )
+""")
 
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=15) as server:
             server.starttls()
             server.login(SMTP_USER, SMTP_PASSWORD)
             server.send_message(msg)
@@ -136,40 +133,34 @@ Message:
         print("❌ EMAIL ERROR:", e)
 
 # =========================
-# RUTAS
+# SITEMAP.XML
 # =========================
-
 @app.route("/sitemap.xml", strict_slashes=False)
 def sitemap():
-    pages = []
-
     base_url = "https://wildlightstudiocr.com"
     today = datetime.date.today().isoformat()
+    pages = []
 
-    # Páginas principales
     static_pages = [
-        "",
-        "galleries",
-        "about",
-        "licensing",
-        "contact"
+        {"path": "", "priority": "1.0"},
+        {"path": "galleries", "priority": "0.9"},
+        {"path": "about", "priority": "0.7"},
+        {"path": "licensing", "priority": "0.8"},
+        {"path": "contact", "priority": "0.6"},
     ]
 
     for page in static_pages:
         pages.append({
-            "loc": f"{base_url}/{page}",
+            "loc": f"{base_url}/{page['path']}",
             "lastmod": today,
             "changefreq": "weekly",
-            "priority": "0.8"
+            "priority": page["priority"]
         })
 
-    # Galerías y fotos
     if os.path.exists(IMAGES_DIR):
-        for category in os.listdir(IMAGES_DIR):
+        for category in sorted(os.listdir(IMAGES_DIR)):
             category_path = os.path.join(IMAGES_DIR, category)
-
             if os.path.isdir(category_path):
-                # Página de galería
                 pages.append({
                     "loc": f"{base_url}/gallery/{category}",
                     "lastmod": today,
@@ -177,9 +168,8 @@ def sitemap():
                     "priority": "0.9"
                 })
 
-                # Fotos individuales
-                for img in os.listdir(category_path):
-                    if img.endswith(".jpg"):
+                for img in sorted(os.listdir(category_path)):
+                    if img.lower().endswith(".jpg"):
                         photo_id = img.replace(".jpg", "")
                         pages.append({
                             "loc": f"{base_url}/photo/{category}/{photo_id}",
@@ -191,48 +181,44 @@ def sitemap():
     xml = ['<?xml version="1.0" encoding="UTF-8"?>']
     xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
 
-    for page in pages:
+    for p in pages:
         xml.append("<url>")
-        xml.append(f"<loc>{page['loc']}</loc>")
-        xml.append(f"<lastmod>{page['lastmod']}</lastmod>")
-        xml.append(f"<changefreq>{page['changefreq']}</changefreq>")
-        xml.append(f"<priority>{page['priority']}</priority>")
+        xml.append(f"<loc>{p['loc']}</loc>")
+        xml.append(f"<lastmod>{p['lastmod']}</lastmod>")
+        xml.append(f"<changefreq>{p['changefreq']}</changefreq>")
+        xml.append(f"<priority>{p['priority']}</priority>")
         xml.append("</url>")
 
     xml.append("</urlset>")
 
     return Response("\n".join(xml), mimetype="application/xml")
+
+# =========================
+# RUTAS
+# =========================
 @app.route("/", strict_slashes=False)
 def home():
-    return render_page(
-        "index.html",
+    return render_page("index.html",
         meta_description="Wildlife and nature photography by Wildlight Studio. Licensing and fine art prints available."
     )
 
-
 @app.route("/galleries", strict_slashes=False)
 def galleries():
-    return render_page(
-        "galleries.html",
-        meta_description="Wildlife photography galleries by Wildlight Studio. Explore birds and nature collections."
+    return render_page("galleries.html",
+        meta_description="Wildlife photography galleries by Wildlight Studio."
     )
-
 
 @app.route("/about", strict_slashes=False)
 def about():
-    return render_page(
-        "about.html",
-        meta_description="About Wildlight Studio, a wildlife and nature photography project focused on birds."
+    return render_page("about.html",
+        meta_description="About Wildlight Studio, wildlife and nature photography."
     )
-
 
 @app.route("/licensing", strict_slashes=False)
 def licensing():
-    return render_page(
-        "licensing.html",
-        meta_description="Wildlife photography licensing and usage information. Editorial and commercial licenses available."
+    return render_page("licensing.html",
+        meta_description="Wildlife photography licensing and usage information."
     )
-
 
 @app.route("/contact", methods=["GET", "POST"], strict_slashes=False)
 def contact():
@@ -240,50 +226,30 @@ def contact():
 
     if request.method == "POST":
         send_email(
-            name=request.form.get("name"),
-            email=request.form.get("email"),
-            message=request.form.get("message"),
-            photo=request.form.get("photo_id")
+            request.form.get("name"),
+            request.form.get("email"),
+            request.form.get("message"),
+            request.form.get("photo_id")
         )
+        return render_page("contact.html", success=True, photo=photo)
 
-        return render_page(
-            "contact.html",
-            success=True,
-            photo=request.form.get("photo_id"),
-            meta_description="Contact Wildlight Studio for wildlife photography licensing, fine art prints, or collaborations."
-        )
-
-    return render_page(
-        "contact.html",
-        photo=photo,
-        meta_description="Contact Wildlight Studio for wildlife photography licensing, fine art prints, or collaborations."
-    )
-
+    return render_page("contact.html", photo=photo)
 
 @app.route("/gallery/<category>", strict_slashes=False)
 def gallery(category):
-    return render_page(
-        "gallery.html",
-        category=category,
-        meta_description=f"{category.capitalize()} wildlife photography gallery by Wildlight Studio."
-    )
-
+    return render_page("gallery.html", category=category)
 
 @app.route("/photo/<category>/<photo_id>", strict_slashes=False)
 def photo(category, photo_id):
-    related_photos = get_related_photos(category, photo_id)
-
     return render_page(
         "photo.html",
         category=category,
         photo_id=photo_id,
-        related_photos=related_photos,
-        meta_description=f"{category.capitalize()} wildlife photograph available for licensing and fine art prints by Wildlight Studio."
+        related_photos=get_related_photos(category, photo_id)
     )
 
-
 # =========================
-# ARRANQUE
+# START
 # =========================
 if __name__ == "__main__":
     app.run(debug=True)
