@@ -12,6 +12,10 @@
 /* =========================
    BASE / RESET
 ========================= */
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
@@ -25,20 +29,20 @@ img {
 }
 
 a {
+    color: inherit;
     transition: color 0.2s ease;
 }
 
 /* =========================
    TIPOGRAFÍA
 ========================= */
-h1 {
+h1, h2 {
     font-family: 'Playfair Display', serif;
-    font-size: 2.8rem;
-    margin-bottom: 10px;
 }
 
-h2 {
-    font-family: 'Playfair Display', serif;
+h1 {
+    font-size: 2.6rem;
+    margin-bottom: 10px;
 }
 
 p {
@@ -62,13 +66,11 @@ p {
 }
 
 .brand {
-    font-family: 'Playfair Display', serif;
     font-size: 1.4rem;
     font-weight: 600;
 }
 
 .nav-links a {
-    color: var(--text-main);
     text-decoration: none;
     margin-left: 20px;
     font-size: 0.95rem;
@@ -82,11 +84,6 @@ p {
 .language-switch {
     font-size: 0.85rem;
     opacity: 0.8;
-}
-
-.language-switch a {
-    color: var(--text-main);
-    text-decoration: none;
 }
 
 /* =========================
@@ -103,7 +100,20 @@ main {
 ========================= */
 .hero {
     text-align: center;
-    padding: 100px 20px;
+    padding: 100px 20px 80px;
+}
+
+.hero-subtitle {
+    max-width: 700px;
+    margin: 20px auto 40px;
+    font-size: 1.1rem;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 /* =========================
@@ -112,27 +122,22 @@ main {
 .gallery-grid,
 .photo-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-}
-
-.photo-grid {
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
 }
 
 .gallery-card {
     text-decoration: none;
-    color: inherit;
     transition: transform 0.3s ease;
 }
 
 .gallery-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
 }
 
 .gallery-card img,
 .photo-grid img {
-    border-radius: 12px;
+    border-radius: 14px;
 }
 
 .photo-grid img {
@@ -141,8 +146,8 @@ main {
 }
 
 .photo-grid img:hover {
-    transform: scale(1.03);
-    opacity: 0.9;
+    transform: scale(1.04);
+    opacity: 0.92;
 }
 
 /* =========================
@@ -150,19 +155,20 @@ main {
 ========================= */
 .photo-page {
     display: grid;
-    gap: 40px;
+    gap: 50px;
 }
 
 .photo-wrapper {
     background: radial-gradient(circle, var(--bg-secondary) 0%, var(--bg-main) 70%);
-    padding: 20px;
-    border-radius: 16px;
+    padding: 24px;
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 
 .photo-wrapper img {
     max-height: 80vh;
     object-fit: contain;
-    border-radius: 12px;
+    border-radius: 14px;
 }
 
 .photo-info {
@@ -170,7 +176,7 @@ main {
 }
 
 .photo-meta {
-    margin: 12px 0 24px;
+    margin: 14px 0 26px;
     font-size: 0.85rem;
     opacity: 0.75;
 }
@@ -182,7 +188,7 @@ main {
 .photo-note {
     margin-top: 20px;
     font-size: 0.85rem;
-    opacity: 0.7;
+    opacity: 0.65;
 }
 
 /* =========================
@@ -195,7 +201,6 @@ main {
 }
 
 .breadcrumb a {
-    color: var(--text-main);
     text-decoration: none;
 }
 
@@ -227,71 +232,55 @@ hr {
 }
 
 /* =========================
-   CONTACT PAGE
-========================= */
-.contact-page {
-    max-width: 600px;
-    margin: auto;
-}
-
-.contact-intro,
-.contact-success {
-    margin-bottom: 30px;
-}
-
-.contact-success {
-    color: var(--accent);
-    font-weight: 500;
-}
-
-.photo-reference {
-    background-color: var(--bg-secondary);
-    padding: 10px 14px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.contact-form label {
-    display: block;
-    margin-top: 20px;
-    margin-bottom: 6px;
-}
-
-.contact-form input,
-.contact-form textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 6px;
-    border: none;
-    background-color: var(--bg-secondary);
-    color: var(--text-main);
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-    outline: 2px solid var(--accent);
-}
-
-/* =========================
    BOTONES / CTA
 ========================= */
 .cta {
     display: inline-block;
     margin-top: 20px;
-    padding: 12px 20px;
+    padding: 14px 22px;
     background-color: var(--accent);
     color: var(--bg-main);
     text-decoration: none;
-    font-weight: bold;
-    border-radius: 8px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .cta:hover {
-    opacity: 0.85;
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.cta.secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+}
+
+.cta.secondary:hover {
+    background-color: var(--accent);
+    color: var(--bg-main);
 }
 
 /* =========================
-   RESPONSIVE (MOBILE)
+   CONTACT / ABOUT / LICENSING
+========================= */
+.contact-page,
+.about-page,
+.licensing-page {
+    max-width: 800px;
+    margin: auto;
+}
+
+.about-highlight,
+.license-card {
+    background-color: var(--bg-secondary);
+    padding: 30px;
+    border-radius: 16px;
+}
+
+/* =========================
+   RESPONSIVE
 ========================= */
 @media (max-width: 768px) {
 
@@ -307,25 +296,12 @@ hr {
         gap: 12px;
     }
 
-    .nav-links a {
-        margin-left: 0;
-    }
-
-    .hero {
-        padding: 60px 20px;
-    }
-
     h1 {
         font-size: 2rem;
     }
 
     main {
         padding: 40px 16px;
-    }
-
-    .gallery-grid,
-    .photo-grid {
-        gap: 16px;
     }
 
     .photo-wrapper img {
@@ -336,158 +312,4 @@ hr {
         width: 100%;
         text-align: center;
     }
-}
-/* =========================
-   ABOUT PAGE
-========================= */
-.about-page {
-    max-width: 800px;
-    margin: auto;
-}
-
-.about-intro {
-    font-size: 1.1rem;
-    margin-bottom: 20px;
-}
-
-.about-highlight {
-    margin: 50px 0;
-    padding: 30px;
-    background-color: var(--bg-secondary);
-    border-radius: 12px;
-}
-
-.about-highlight h2 {
-    margin-bottom: 16px;
-}
-
-.about-highlight ul {
-    list-style: none;
-    padding: 0;
-}
-
-.about-highlight li {
-    margin-bottom: 10px;
-    opacity: 0.9;
-}
-
-.about-cta {
-    margin-top: 60px;
-    text-align: center;
-}
-/* =========================
-   LICENSING PAGE
-========================= */
-.licensing-page {
-    max-width: 800px;
-    margin: auto;
-}
-
-.licensing-intro {
-    font-size: 1.1rem;
-    margin-bottom: 20px;
-}
-
-.licensing-types,
-.licensing-process {
-    margin: 50px 0;
-}
-
-.licensing-types ul,
-.licensing-process ol {
-    margin-top: 20px;
-    padding-left: 20px;
-}
-
-.licensing-types li,
-.licensing-process li {
-    margin-bottom: 12px;
-}
-
-.licensing-cta {
-    margin-top: 60px;
-    text-align: center;
-}
-.hero {
-    text-align: center;
-    padding: 100px 20px 80px;
-}
-
-.hero-subtitle {
-    max-width: 700px;
-    margin: 20px auto 40px;
-    font-size: 1.1rem;
-}
-
-.hero-actions {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.cta.secondary {
-    background-color: transparent;
-    color: #22c55e;
-    border: 2px solid #22c55e;
-}
-
-.cta.secondary:hover {
-    background-color: #22c55e;
-    color: #0b0f14;
-}
-
-.home-intro {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-    padding-bottom: 40px;
-}
-.licensing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
-    margin-top: 50px;
-}
-
-.license-card {
-    background: #111827;
-    padding: 28px;
-    border-radius: 16px;
-    text-align: center;
-}
-
-.license-card h2 {
-    margin-bottom: 10px;
-}
-
-.license-use {
-    font-size: 0.9rem;
-    opacity: 0.8;
-    margin-bottom: 20px;
-}
-
-.license-card ul {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 25px;
-}
-
-.license-card li {
-    margin-bottom: 8px;
-}
-
-.license-card.featured {
-    border: 1px solid #22c55e;
-}
-.photo-main {
-    text-align: center;
-    margin: 2rem 0;
-}
-
-.photo-main img {
-    max-width: 90%;
-    max-height: 80vh;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }

@@ -22,28 +22,33 @@
         </a>
         <span aria-hidden="true">›</span>
 
-        <span class="current" aria-current="page">Photo</span>
+        <span class="current" aria-current="page">
+            {{ photo_id|replace('-', ' ')|capitalize }}
+        </span>
     </nav>
 
     <!-- =========================
          MAIN IMAGE
     ========================= -->
+    {% if photo_id %}
     <figure class="photo-wrapper">
         <img
             src="/static/images/{{ category }}/thumbnails/{{ photo_id }}.jpg"
-            srcset="/static/images/{{ category }}/thumbnails/{{ photo_id }}.jpg 1200w"
-            sizes="(max-width: 768px) 100vw, 1200px"
-            alt="{{ category|capitalize }} wildlife photograph in Costa Rica by Wildlight Studio, available for licensing"
+            alt="{{ category|capitalize }} wildlife photograph in Costa Rica by Wildlight Studio"
             loading="lazy"
             width="1200"
             height="800"
             itemprop="contentUrl">
 
-        <!-- Image metadata -->
         <meta itemprop="name" content="{{ category|capitalize }} Wildlife Photograph {{ photo_id }}">
         <meta itemprop="author" content="Wildlight Studio">
         <meta itemprop="license" content="https://wildlightstudiocr.com/licensing">
     </figure>
+    {% else %}
+        <p class="photo-error">
+            This image is currently unavailable.
+        </p>
+    {% endif %}
 
     <!-- =========================
          PHOTO INFORMATION
