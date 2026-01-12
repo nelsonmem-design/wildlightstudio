@@ -1,16 +1,30 @@
 {% extends "base.html" %}
 
-{% block title %}{{ category|capitalize }} | Wildlight Studio{% endblock %}
+{% block title %}
+{{ category|capitalize }} Wildlife Photography | Wildlight Studio
+{% endblock %}
 
 {% block content %}
-<h1>{{ category|capitalize }}</h1>
+<section class="gallery-page">
 
-<div class="photo-grid">
-    {% for i in range(1,4) %}
-        <a href="/photo/{{ category }}/bird{{ i }}">
-            <img src="/static/images/{{ category }}/bird{{ i }}.jpg"
-                 alt="{{ category }} photo">
-        </a>
-    {% endfor %}
-</div>
+    <h1>{{ category|capitalize }}</h1>
+
+    {% if photos %}
+        <div class="photo-grid">
+            {% for photo in photos %}
+                <a href="/photo/{{ category }}/{{ photo }}?lang={{ lang }}">
+                    <img
+                        src="/static/images/{{ category }}/{{ photo }}.jpg"
+                        alt="{{ category|capitalize }} wildlife photo {{ photo }} by Wildlight Studio"
+                        loading="lazy"
+                        width="400"
+                        height="300">
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No photos available in this gallery yet.</p>
+    {% endif %}
+
+</section>
 {% endblock %}

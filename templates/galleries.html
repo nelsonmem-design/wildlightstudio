@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Galleries | Wildlight Studio{% endblock %}
+{% block title %}
+Galleries | Wildlife Photography | Wildlight Studio
+{% endblock %}
 
 {% block content %}
-<h1>Galleries</h1>
+<section class="galleries-page">
 
-<div class="gallery-grid">
-    <a href="/gallery/birds" class="gallery-card">
-        <img src="{{ url_for('static', filename='images/birds/bird1.jpg') }}" alt="Birds">
-        <h2>Birds</h2>
-    </a>
-</div>
-{% endblock %}
+    <header class="galleries-header">
+        <h1>Galleries</h1>
+        <p>
+            Explore wildlife photography galleries by category.
+            All images are available for
