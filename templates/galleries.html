@@ -1,14 +1,31 @@
 {% extends "base.html" %}
 
 {% block title %}
-Galleries | Wildlife Photography | Wildlight Studio
+Galleries | Wildlight Studio
 {% endblock %}
 
 {% block content %}
 <section class="galleries-page">
 
-    <header class="galleries-header">
-        <h1>Galleries</h1>
-        <p>
-            Explore wildlife photography galleries by category.
-            All images are available for
+    <h1>Photo Galleries</h1>
+    <p>Explore wildlife photography collections by category.</p>
+
+    <div class="photo-grid">
+
+        {% for category in categories %}
+            <a href="/gallery/{{ category }}?lang={{ lang }}" class="gallery-card">
+
+                <!-- Imagen representativa (primera foto de la categoría) -->
+                <img
+                    src="/static/images/{{ category }}/{{ preview_images[category] }}"
+                    alt="{{ category|capitalize }} wildlife photography gallery"
+                    loading="lazy">
+
+                <h2>{{ category|capitalize }}</h2>
+            </a>
+        {% endfor %}
+
+    </div>
+
+</section>
+{% endblock %}

@@ -102,16 +102,18 @@ def get_related_photos(category, current_photo, limit=4):
     return photos[:limit]
 
 
+# ==================================================
+# EMAIL
+# ==================================================
 def send_email(name, email, message, photo=None):
     if not SMTP_PASSWORD:
         print("❌ SMTP_PASSWORD no configurado")
         return
 
-    subject = (
-        f"License request – {photo} | Wildlight Studio"
-        if photo else
-        "General inquiry | Wildlight Studio"
-    )
+    photo_label = photo if photo else "General inquiry"
+
+    subject = f"License request – {photo_label} | Wildlight Studio"
+
 
     try:
         msg = EmailMessage()
@@ -120,8 +122,8 @@ def send_email(name, email, message, photo=None):
         msg["To"] = ", ".join(EMAIL_TO)
         msg["Reply-To"] = email
 
-        msg.set_content(f"""
-New contact request from Wildlight Studio
+        msg.set_content(
+            f"""New contact request from Wildlight Studio
 
 Name: {name}
 Email: {email}
@@ -129,7 +131,8 @@ Photo of interest: {photo or "N/A"}
 
 Message:
 {message}
-""")
+"""
+        )
 
         with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=15) as server:
             server.starttls()
@@ -140,6 +143,7 @@ Message:
 
     except Exception as e:
         print("❌ EMAIL ERROR:", e)
+
 
 # ==================================================
 # SITEMAP.XML
@@ -203,48 +207,41 @@ def sitemap():
     xml.append("</urlset>")
     return Response("\n".join(xml), mimetype="application/xml")
 
+
 # ==================================================
 # RUTAS
 # ==================================================
-@app.route("/", strict_slashes=False)
+@app.route("/")
 def home():
     return render_page("index.html")
 
-@app.route("/galleries", strict_slashes=False)
+
+@app.route("/galleries")
 def galleries():
-    categories = sorted(
-        d for d in os.listdir(IMAGES_DIR)
-        if os.path.isdir(os.path.join(IMAGES_DIR, d))
+    categories = []
+    preview_images = {}
+
+    if os.path.exists(IMAGES_DIR):
+        for category in sorted(os.listdir(IMAGES_DIR)):
+            category_path = os.path.join(IMAGES_DIR, category)
+            if os.path.isdir(category_path):
+                images = [
+                    img for img in sorted(os.listdir(category_path))
+                    if img.lower().endswith(".jpg")
+                ]
+                if images:
+                    categories.append(category)
+                    preview_images[category] = images[0]
+
+    return render_page(
+        "galleries.html",
+        categories=categories,
+        preview_images=preview_images,
+        meta_description="Wildlife photography galleries by category by Wildlight Studio."
     )
-    return render_page("galleries.html", categories=categories)
 
-@app.route("/about", strict_slashes=False)
-def about():
-    return render_page("about.html")
 
-@app.route("/licensing", strict_slashes=False)
-def licensing():
-    return render_page("licensing.html")
-
-@app.route("/contact", methods=["GET", "POST"], strict_slashes=False)
-def contact():
-    photo = request.values.get("photo") or request.form.get("photo_id")
-
-    if request.method == "POST":
-        if not request.form.get("email") or not request.form.get("message"):
-            return render_page("contact.html", error=True, photo=photo)
-
-        send_email(
-            name=request.form.get("name", "N/A"),
-            email=request.form.get("email"),
-            message=request.form.get("message"),
-            photo=photo
-        )
-        return render_page("contact.html", success=True, photo=photo)
-
-    return render_page("contact.html", photo=photo)
-
-@app.route("/gallery/<category>", strict_slashes=False)
+@app.route("/gallery/<category>")
 def gallery(category):
     folder = os.path.join(IMAGES_DIR, category)
     photos = []
@@ -262,13 +259,65 @@ def gallery(category):
         photos=photos
     )
 
-@app.route("/photo/<category>/<photo_id>", strict_slashes=False)
+
+@app.route("/photo/<category>/<photo_id>")
 def photo(category, photo_id):
     return render_page(
         "photo.html",
         category=category,
         photo_id=photo_id,
         related_photos=get_related_photos(category, photo_id)
+    )
+
+
+@app.route("/about")
+def about():
+    return render_page("about.html")
+
+
+@app.route("/licensing")
+def licensing():
+    return render_page("licensing.html")
+
+
+@app.route("/contact", methods=["GET", "POST"], strict_slashes=False)
+def contact():
+    # Normalizar photo venga de donde venga
+    photo = (
+        request.form.get("photo_id")
+        or request.form.get("photo")
+        or request.args.get("photo")
+    )
+
+    if request.method == "POST":
+        email = request.form.get("email")
+        message = request.form.get("message")
+        name = request.form.get("name", "N/A")
+
+        # Validación mínima (evita 500)
+        if not email or not message:
+            return render_page(
+                "contact.html",
+                error=True,
+                photo=photo
+            )
+
+        send_email(
+            name=name,
+            email=email,
+            message=message,
+            photo=photo
+        )
+
+        return render_page(
+            "contact.html",
+            success=True,
+            photo=photo
+        )
+
+    return render_page(
+        "contact.html",
+        photo=photo
     )
 
 # ==================================================
