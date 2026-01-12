@@ -30,8 +30,8 @@
     ========================= -->
     <figure class="photo-wrapper">
         <img
-            src="/static/images/{{ category }}/{{ photo_id }}.jpg"
-            srcset="/static/images/{{ category }}/{{ photo_id }}.jpg 1200w"
+            src="/static/images/{{ category }}/thumbnails/{{ photo_id }}.jpg"
+            srcset="/static/images/{{ category }}/thumbnails/{{ photo_id }}.jpg 1200w"
             sizes="(max-width: 768px) 100vw, 1200px"
             alt="{{ category|capitalize }} wildlife photograph in Costa Rica by Wildlight Studio, available for licensing"
             loading="lazy"
@@ -51,7 +51,7 @@
     <div class="photo-info">
 
         <h1 itemprop="headline">
-            {{ category|capitalize }} Wildlife Photography
+            {{ photo_id|replace('-', ' ')|capitalize }}
         </h1>
 
         <p class="photo-context">
@@ -101,7 +101,7 @@
                 {% for rp in related_photos %}
                     <a href="/photo/{{ category }}/{{ rp }}?lang={{ lang }}">
                         <img
-                            src="/static/images/{{ category }}/{{ rp }}.jpg"
+                            src="/static/images/{{ category }}/thumbnails/{{ rp }}.jpg"
                             alt="Related {{ category|capitalize }} wildlife photo by Wildlight Studio"
                             loading="lazy"
                             width="400"
@@ -126,7 +126,7 @@
     "@type": "Organization",
     "name": "Wildlight Studio"
   },
-  "contentUrl": "https://wildlightstudiocr.com/static/images/{{ category }}/{{ photo_id }}.jpg",
+  "contentUrl": "https://wildlightstudiocr.com/static/images/{{ category }}/thumbnails/{{ photo_id }}.jpg",
   "url": "https://wildlightstudiocr.com/photo/{{ category }}/{{ photo_id }}",
   "license": "https://wildlightstudiocr.com/licensing",
   "acquireLicensePage": "https://wildlightstudiocr.com/contact?photo={{ category }}-{{ photo_id }}",

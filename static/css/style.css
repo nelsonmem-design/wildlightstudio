@@ -480,3 +480,14 @@ hr {
 .license-card.featured {
     border: 1px solid #22c55e;
 }
+.photo-main {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.photo-main img {
+    max-width: 90%;
+    max-height: 80vh;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
