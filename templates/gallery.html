@@ -11,16 +11,21 @@
 
     {% if photos %}
         <div class="photo-grid">
+
             {% for photo in photos %}
-                <a href="/photo/{{ category }}/{{ photo }}?lang={{ lang }}">
+                <a href="/photo/{{ category }}/{{ photo }}?lang={{ lang }}" class="photo-item">
+
+                    <!-- Thumbnail -->
                     <img
-                        src="/static/images/{{ category }}/{{ photo }}.jpg"
+                        src="/static/images/{{ category }}/thumbnails/{{ photo }}.jpg"
                         alt="{{ category|capitalize }} wildlife photo {{ photo }} by Wildlight Studio"
                         loading="lazy"
                         width="400"
                         height="300">
+
                 </a>
             {% endfor %}
+
         </div>
     {% else %}
         <p>No photos available in this gallery yet.</p>
