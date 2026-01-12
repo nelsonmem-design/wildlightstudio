@@ -20,7 +20,7 @@ SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 
 SMTP_USER = os.environ.get("SMTP_USER", "contact@wildlightstudiocr.com")
-SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")  # App Password (16 dígitos)
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")
 
 EMAIL_FROM = SMTP_USER
 EMAIL_TO = [
@@ -101,7 +101,6 @@ def get_related_photos(category, current_photo, limit=4):
     ]
     return photos[:limit]
 
-
 # ==================================================
 # EMAIL
 # ==================================================
@@ -110,10 +109,11 @@ def send_email(name, email, message, photo=None):
         print("❌ SMTP_PASSWORD no configurado")
         return
 
-    photo_label = photo if photo else "General inquiry"
+    # Sanitizar photo para evitar headers inválidos
+    photo_clean = photo.strip().replace("\n", "").replace("\r", "") if photo else ""
+    photo_label = photo_clean if photo_clean else "General inquiry"
 
     subject = f"License request – {photo_label} | Wildlight Studio"
-
 
     try:
         msg = EmailMessage()
@@ -127,7 +127,7 @@ def send_email(name, email, message, photo=None):
 
 Name: {name}
 Email: {email}
-Photo of interest: {photo or "N/A"}
+Photo of interest: {photo_label}
 
 Message:
 {message}
@@ -144,70 +144,6 @@ Message:
     except Exception as e:
         print("❌ EMAIL ERROR:", e)
 
-
-# ==================================================
-# SITEMAP.XML
-# ==================================================
-@app.route("/sitemap.xml", strict_slashes=False)
-def sitemap():
-    base_url = "https://wildlightstudiocr.com"
-    today = datetime.date.today().isoformat()
-    pages = []
-
-    static_pages = [
-        ("", "1.0"),
-        ("galleries", "0.9"),
-        ("about", "0.7"),
-        ("licensing", "0.8"),
-        ("contact", "0.6"),
-    ]
-
-    for path, priority in static_pages:
-        pages.append({
-            "loc": f"{base_url}/{path}",
-            "lastmod": today,
-            "changefreq": "weekly",
-            "priority": priority
-        })
-
-    if os.path.exists(IMAGES_DIR):
-        for category in sorted(os.listdir(IMAGES_DIR)):
-            category_path = os.path.join(IMAGES_DIR, category)
-            if os.path.isdir(category_path):
-                pages.append({
-                    "loc": f"{base_url}/gallery/{category}",
-                    "lastmod": today,
-                    "changefreq": "weekly",
-                    "priority": "0.9"
-                })
-
-                for img in sorted(os.listdir(category_path)):
-                    if img.lower().endswith(".jpg"):
-                        photo_id = img.replace(".jpg", "")
-                        pages.append({
-                            "loc": f"{base_url}/photo/{category}/{photo_id}",
-                            "lastmod": today,
-                            "changefreq": "monthly",
-                            "priority": "0.7"
-                        })
-
-    xml = ['<?xml version="1.0" encoding="UTF-8"?>']
-    xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
-
-    for p in pages:
-        xml.extend([
-            "<url>",
-            f"<loc>{p['loc']}</loc>",
-            f"<lastmod>{p['lastmod']}</lastmod>",
-            f"<changefreq>{p['changefreq']}</changefreq>",
-            f"<priority>{p['priority']}</priority>",
-            "</url>"
-        ])
-
-    xml.append("</urlset>")
-    return Response("\n".join(xml), mimetype="application/xml")
-
-
 # ==================================================
 # RUTAS
 # ==================================================
@@ -223,21 +159,17 @@ def galleries():
 
     if os.path.exists(IMAGES_DIR):
         for category in sorted(os.listdir(IMAGES_DIR)):
-            category_path = os.path.join(IMAGES_DIR, category)
-            if os.path.isdir(category_path):
-                images = [
-                    img for img in sorted(os.listdir(category_path))
-                    if img.lower().endswith(".jpg")
-                ]
+            path = os.path.join(IMAGES_DIR, category)
+            if os.path.isdir(path):
+                images = [i for i in os.listdir(path) if i.lower().endswith(".jpg")]
                 if images:
                     categories.append(category)
-                    preview_images[category] = images[0]
+                    preview_images[category] = sorted(images)[0]
 
     return render_page(
         "galleries.html",
         categories=categories,
-        preview_images=preview_images,
-        meta_description="Wildlife photography galleries by category by Wildlight Studio."
+        preview_images=preview_images
     )
 
 
@@ -253,11 +185,7 @@ def gallery(category):
             if f.lower().endswith(".jpg")
         ]
 
-    return render_page(
-        "gallery.html",
-        category=category,
-        photos=photos
-    )
+    return render_page("gallery.html", category=category, photos=photos)
 
 
 @app.route("/photo/<category>/<photo_id>")
@@ -280,13 +208,13 @@ def licensing():
     return render_page("licensing.html")
 
 
-@app.route("/contact", methods=["GET", "POST"], strict_slashes=False)
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    # Normalizar photo venga de donde venga
     photo = (
         request.form.get("photo_id")
         or request.form.get("photo")
         or request.args.get("photo")
+        or ""
     )
 
     if request.method == "POST":
@@ -294,31 +222,14 @@ def contact():
         message = request.form.get("message")
         name = request.form.get("name", "N/A")
 
-        # Validación mínima (evita 500)
         if not email or not message:
-            return render_page(
-                "contact.html",
-                error=True,
-                photo=photo
-            )
+            return render_page("contact.html", error=True, photo=photo)
 
-        send_email(
-            name=name,
-            email=email,
-            message=message,
-            photo=photo
-        )
+        send_email(name, email, message, photo)
 
-        return render_page(
-            "contact.html",
-            success=True,
-            photo=photo
-        )
+        return render_page("contact.html", success=True, photo=photo)
 
-    return render_page(
-        "contact.html",
-        photo=photo
-    )
+    return render_page("contact.html", photo=photo)
 
 # ==================================================
 # START
