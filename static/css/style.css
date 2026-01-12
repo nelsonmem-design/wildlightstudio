@@ -408,3 +408,75 @@ hr {
     margin-top: 60px;
     text-align: center;
 }
+.hero {
+    text-align: center;
+    padding: 100px 20px 80px;
+}
+
+.hero-subtitle {
+    max-width: 700px;
+    margin: 20px auto 40px;
+    font-size: 1.1rem;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.cta.secondary {
+    background-color: transparent;
+    color: #22c55e;
+    border: 2px solid #22c55e;
+}
+
+.cta.secondary:hover {
+    background-color: #22c55e;
+    color: #0b0f14;
+}
+
+.home-intro {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding-bottom: 40px;
+}
+.licensing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.license-card {
+    background: #111827;
+    padding: 28px;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.license-card h2 {
+    margin-bottom: 10px;
+}
+
+.license-use {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 20px;
+}
+
+.license-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 25px;
+}
+
+.license-card li {
+    margin-bottom: 8px;
+}
+
+.license-card.featured {
+    border: 1px solid #22c55e;
+}

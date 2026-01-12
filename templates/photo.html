@@ -7,42 +7,57 @@
 {% block content %}
 <section class="photo-page" itemscope itemtype="https://schema.org/ImageObject">
 
-    <!-- Breadcrumb -->
+    <!-- =========================
+         BREADCRUMB
+    ========================= -->
     <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="/?lang={{ lang }}">Home</a>
-        <span>›</span>
+        <span aria-hidden="true">›</span>
+
         <a href="/galleries?lang={{ lang }}">Galleries</a>
-        <span>›</span>
+        <span aria-hidden="true">›</span>
+
         <a href="/gallery/{{ category }}?lang={{ lang }}">
             {{ category|capitalize }}
         </a>
-        <span>›</span>
-        <span class="current">Photo</span>
+        <span aria-hidden="true">›</span>
+
+        <span class="current" aria-current="page">Photo</span>
     </nav>
 
-    <!-- Main Photo -->
-    <div class="photo-wrapper">
+    <!-- =========================
+         MAIN IMAGE
+    ========================= -->
+    <figure class="photo-wrapper">
         <img
             src="/static/images/{{ category }}/{{ photo_id }}.jpg"
-            srcset="
-                /static/images/{{ category }}/{{ photo_id }}.jpg 1200w
-            "
+            srcset="/static/images/{{ category }}/{{ photo_id }}.jpg 1200w"
             sizes="(max-width: 768px) 100vw, 1200px"
-            alt="{{ category|capitalize }} wildlife photograph {{ photo_id }} by Wildlight Studio"
+            alt="{{ category|capitalize }} wildlife photograph in Costa Rica by Wildlight Studio, available for licensing"
             loading="lazy"
+            width="1200"
+            height="800"
             itemprop="contentUrl">
 
-        <meta itemprop="name" content="{{ category|capitalize }} Wildlife Photo {{ photo_id }}">
+        <!-- Image metadata -->
+        <meta itemprop="name" content="{{ category|capitalize }} Wildlife Photograph {{ photo_id }}">
         <meta itemprop="author" content="Wildlight Studio">
         <meta itemprop="license" content="https://wildlightstudiocr.com/licensing">
-    </div>
+    </figure>
 
-    <!-- Photo Info -->
+    <!-- =========================
+         PHOTO INFORMATION
+    ========================= -->
     <div class="photo-info">
 
         <h1 itemprop="headline">
             {{ category|capitalize }} Wildlife Photography
         </h1>
+
+        <p class="photo-context">
+            High-quality wildlife photography of {{ category|capitalize }} taken in Costa Rica.
+            Available for editorial licensing and fine art prints.
+        </p>
 
         <p class="photo-meta">
             <strong>Photo ID:</strong> {{ category }}-{{ photo_id }} ·
@@ -50,35 +65,47 @@
         </p>
 
         <p class="photo-caption" itemprop="description">
-            {{ texts.contact_intro }}
+            Professional {{ category }} wildlife photograph by Wildlight Studio.
+            Suitable for editorial, commercial, conservation, and educational use.
         </p>
 
-        <a href="/contact?photo={{ category }}-{{ photo_id }}&lang={{ lang }}"
-           class="cta">
+        <a
+            href="/contact?photo={{ category }}-{{ photo_id }}&lang={{ lang }}"
+            class="cta"
+            itemprop="acquireLicensePage">
             {{ texts.send_request }}
         </a>
 
+        <p class="photo-license">
+            License available ·
+            <a href="/licensing?lang={{ lang }}">View usage terms</a>
+        </p>
+
         <p class="photo-note">
             © Wildlight Studio — All rights reserved.<br>
-            Licensing available for editorial, commercial, conservation, and educational use.
+            Unauthorized use is prohibited.
         </p>
 
     </div>
 
-    <!-- Related Photos -->
+    <!-- =========================
+         RELATED PHOTOS
+    ========================= -->
     {% if related_photos %}
         <hr>
 
         <section class="related-section">
-            <h2>Related Photos</h2>
+            <h2>Related Wildlife Photos</h2>
 
             <div class="photo-grid">
                 {% for rp in related_photos %}
                     <a href="/photo/{{ category }}/{{ rp }}?lang={{ lang }}">
                         <img
                             src="/static/images/{{ category }}/{{ rp }}.jpg"
-                            alt="Related {{ category|capitalize }} wildlife photo {{ rp }} by Wildlight Studio"
-                            loading="lazy">
+                            alt="Related {{ category|capitalize }} wildlife photo by Wildlight Studio"
+                            loading="lazy"
+                            width="400"
+                            height="300">
                     </a>
                 {% endfor %}
             </div>
@@ -86,4 +113,25 @@
     {% endif %}
 
 </section>
+
+<!-- =========================
+     STRUCTURED DATA (JSON-LD)
+========================= -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ImageObject",
+  "name": "{{ category|capitalize }} wildlife photograph",
+  "author": {
+    "@type": "Organization",
+    "name": "Wildlight Studio"
+  },
+  "contentUrl": "https://wildlightstudiocr.com/static/images/{{ category }}/{{ photo_id }}.jpg",
+  "url": "https://wildlightstudiocr.com/photo/{{ category }}/{{ photo_id }}",
+  "license": "https://wildlightstudiocr.com/licensing",
+  "acquireLicensePage": "https://wildlightstudiocr.com/contact?photo={{ category }}-{{ photo_id }}",
+  "copyrightNotice": "© Wildlight Studio"
+}
+</script>
+
 {% endblock %}

@@ -1,14 +1,40 @@
 {% extends "base.html" %}
 
-{% block title %}{{ texts.home_title }}{% endblock %}
+{% block title %}
+Wildlight Studio | Wildlife & Nature Photography
+{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <h1>{{ texts.home_title }}</h1>
-    <p>{{ texts.home_subtitle }}</p>
 
-    <a href="/galleries?lang={{ lang }}" class="cta">
-        {{ texts.cta_galleries }}
-    </a>
+<section class="hero">
+
+    <h1>{{ texts.home_title }}</h1>
+
+    <p class="hero-subtitle">
+        {{ texts.home_subtitle }} specializing in birds, wildlife,
+        and natural habitats. Images available for licensing and fine art prints.
+    </p>
+
+    <div class="hero-actions">
+        <a href="/galleries?lang={{ lang }}" class="cta">
+            {{ texts.cta_galleries }}
+        </a>
+
+        <a href="/contact?lang={{ lang }}" class="cta secondary">
+            License an Image
+        </a>
+    </div>
+
 </section>
+
+<section class="home-intro">
+
+    <p>
+        Wildlight Studio is a wildlife photography project focused on
+        documenting birds and nature with respect, patience, and light.
+        Photographs are available for editorial, commercial, and conservation use.
+    </p>
+
+</section>
+
 {% endblock %}
