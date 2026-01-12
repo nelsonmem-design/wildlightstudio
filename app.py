@@ -1,7 +1,6 @@
-from flask import Flask, render_template, request, session, Response
+from flask import Flask, render_template, request, session
 import os
 import smtplib
-import datetime
 from email.message import EmailMessage
 
 # ==================================================
@@ -14,7 +13,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 IMAGES_DIR = os.path.join(BASE_DIR, "static", "images")
 
 # ==================================================
-# SMTP CONFIG (GMAIL SMTP AUTH + APP PASSWORD)
+# SMTP CONFIG
 # ==================================================
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
@@ -90,7 +89,7 @@ def render_page(template, **kwargs):
 
 
 def get_related_photos(category, current_photo, limit=4):
-    folder = os.path.join(IMAGES_DIR, category)
+    folder = os.path.join(IMAGES_DIR, category, "thumbnails")
     if not os.path.exists(folder):
         return []
 
@@ -109,21 +108,17 @@ def send_email(name, email, message, photo=None):
         print("❌ SMTP_PASSWORD no configurado")
         return
 
-    # Sanitizar photo para evitar headers inválidos
-    photo_clean = photo.strip().replace("\n", "").replace("\r", "") if photo else ""
-    photo_label = photo_clean if photo_clean else "General inquiry"
-
+    photo_label = photo if photo else "General inquiry"
     subject = f"License request – {photo_label} | Wildlight Studio"
 
-    try:
-        msg = EmailMessage()
-        msg["Subject"] = subject
-        msg["From"] = EMAIL_FROM
-        msg["To"] = ", ".join(EMAIL_TO)
-        msg["Reply-To"] = email
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = EMAIL_FROM
+    msg["To"] = ", ".join(EMAIL_TO)
+    msg["Reply-To"] = email
 
-        msg.set_content(
-            f"""New contact request from Wildlight Studio
+    msg.set_content(
+        f"""New contact request from Wildlight Studio
 
 Name: {name}
 Email: {email}
@@ -132,17 +127,12 @@ Photo of interest: {photo_label}
 Message:
 {message}
 """
-        )
+    )
 
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=15) as server:
-            server.starttls()
-            server.login(SMTP_USER, SMTP_PASSWORD)
-            server.send_message(msg)
-
-        print(f"✅ Email sent | {subject}")
-
-    except Exception as e:
-        print("❌ EMAIL ERROR:", e)
+    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=15) as server:
+        server.starttls()
+        server.login(SMTP_USER, SMTP_PASSWORD)
+        server.send_message(msg)
 
 # ==================================================
 # RUTAS
@@ -154,17 +144,11 @@ def home():
 
 @app.route("/galleries")
 def galleries():
-    categories = []
-    preview_images = {}
+    categories = ["birds"]
 
-    if os.path.exists(IMAGES_DIR):
-        for category in sorted(os.listdir(IMAGES_DIR)):
-            path = os.path.join(IMAGES_DIR, category)
-            if os.path.isdir(path):
-                images = [i for i in os.listdir(path) if i.lower().endswith(".jpg")]
-                if images:
-                    categories.append(category)
-                    preview_images[category] = sorted(images)[0]
+    preview_images = {
+        "birds": "keel-billed-toucan.jpg"
+    }
 
     return render_page(
         "galleries.html",
@@ -175,17 +159,22 @@ def galleries():
 
 @app.route("/gallery/<category>")
 def gallery(category):
-    folder = os.path.join(IMAGES_DIR, category)
-    photos = []
+    image_dir = os.path.join(IMAGES_DIR, category, "thumbnails")
 
-    if os.path.exists(folder):
-        photos = [
-            f.replace(".jpg", "")
-            for f in sorted(os.listdir(folder))
-            if f.lower().endswith(".jpg")
-        ]
+    if not os.path.exists(image_dir):
+        return render_page("gallery.html", category=category, photos=[])
 
-    return render_page("gallery.html", category=category, photos=photos)
+    photos = [
+        f.replace(".jpg", "")
+        for f in sorted(os.listdir(image_dir))
+        if f.lower().endswith(".jpg")
+    ]
+
+    return render_page(
+        "gallery.html",
+        category=category,
+        photos=photos
+    )
 
 
 @app.route("/photo/<category>/<photo_id>")
@@ -226,7 +215,6 @@ def contact():
             return render_page("contact.html", error=True, photo=photo)
 
         send_email(name, email, message, photo)
-
         return render_page("contact.html", success=True, photo=photo)
 
     return render_page("contact.html", photo=photo)

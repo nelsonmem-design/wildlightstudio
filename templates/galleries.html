@@ -13,18 +13,20 @@ Galleries | Wildlight Studio
     <div class="photo-grid">
 
         {% for category in categories %}
-            <a href="/gallery/{{ category }}?lang={{ lang }}" class="gallery-card">
+            {% if preview_images[category] is defined %}
+                <a href="/gallery/{{ category }}?lang={{ lang }}"
+                   class="gallery-card">
 
-                <!-- Thumbnail representativo de la galería -->
-                <img
-                    src="/static/images/{{ category }}/thumbnails/{{ preview_images[category] }}"
-                    alt="{{ category|capitalize }} wildlife photography gallery"
-                    loading="lazy"
-                    width="400"
-                    height="300">
+                    <img
+                        src="/static/images/{{ category }}/thumbnails/{{ preview_images[category] }}"
+                        alt="{{ category|capitalize }} wildlife photography gallery"
+                        loading="lazy"
+                        width="400"
+                        height="300">
 
-                <h2>{{ category|capitalize }}</h2>
-            </a>
+                    <h2>{{ category|capitalize }}</h2>
+                </a>
+            {% endif %}
         {% endfor %}
 
     </div>

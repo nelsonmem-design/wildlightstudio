@@ -9,16 +9,16 @@
 
     <h1>{{ category|capitalize }}</h1>
 
-    {% if photos %}
+    {% if photos and photos|length > 0 %}
         <div class="photo-grid">
 
             {% for photo in photos %}
-                <a href="/photo/{{ category }}/{{ photo }}?lang={{ lang }}" class="photo-item">
+                <a href="/photo/{{ category }}/{{ photo }}?lang={{ lang }}"
+                   class="photo-item">
 
-                    <!-- Thumbnail -->
                     <img
                         src="/static/images/{{ category }}/thumbnails/{{ photo }}.jpg"
-                        alt="{{ category|capitalize }} wildlife photo {{ photo }} by Wildlight Studio"
+                        alt="{{ category|capitalize }} wildlife photo {{ photo }}"
                         loading="lazy"
                         width="400"
                         height="300">
