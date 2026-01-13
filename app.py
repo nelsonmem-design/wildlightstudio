@@ -90,18 +90,16 @@ def render_page(template, **kwargs):
 
 def list_photos(folder):
     """
-    Devuelve una lista de nombres de fotos SIN extensión,
-    normalizando .jpg / .JPG / .jpeg
+    Devuelve una lista de nombres de archivo EXACTOS (con extensión),
+    soportando .jpg / .JPG / .jpeg
     """
     if not os.path.exists(folder):
         return []
 
-    photos = []
-    for f in sorted(os.listdir(folder)):
-        if f.lower().endswith(".jpg"):
-            name = os.path.splitext(f)[0]
-            photos.append(name)
-    return photos
+    return sorted([
+        f for f in os.listdir(folder)
+        if f.lower().endswith((".jpg", ".jpeg"))
+    ])
 
 
 def get_related_photos(category, current_photo, limit=4):
