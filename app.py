@@ -156,7 +156,7 @@ def galleries():
     preview_images = {
         "birds": "keel-billed-toucan.jpg",
         "landscapes": "sun-set-cr.jpg",
-        "snakes": "rattlesnake.jpg"
+        "snakes": "eyelash-viper-1.jpg"
     }
 
     return render_page(
