@@ -21,17 +21,17 @@
                 <a
                     href="/photo/{{ category }}/{{ photo }}?lang={{ lang }}"
                     class="photo-item"
-                    aria-label="View {{ category|capitalize }} photo {{ photo }}">
+                    aria-label="View {{ category|capitalize }} photo">
 
                     <img
                         src="/static/images/{{ category }}/thumbnails/{{ photo }}"
-                        alt="{{ category|capitalize }} wildlife photo {{ photo }} by Wildlight Studio"
+                        alt="{{ category|capitalize }} wildlife photo by Wildlight Studio"
                         loading="lazy"
                         width="400"
                         height="300">
 
                 </a>
-            {% endfor %}
+            {% endfor %}8
 
         </div>
     {% else %}
