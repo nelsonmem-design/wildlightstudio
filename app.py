@@ -144,11 +144,12 @@ def home():
 
 @app.route("/galleries")
 def galleries():
-    categories = ["birds", "landscapes"]
+    categories = ["birds", "landscapes", "snakes"]
 
     preview_images = {
         "birds": "keel-billed-toucan.jpg",
-        "landscapes": "sun-set-cr.jpg"
+        "landscapes": "sun-set-cr.jpg",
+        "snakes": "jumping-viper.jpg"
     }
 
     return render_page(
