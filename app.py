@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, abort
 import os
 import smtplib
 from email.message import EmailMessage
@@ -12,12 +12,13 @@ app.secret_key = os.environ.get("SECRET_KEY", "wildlight-secret-key")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 IMAGES_DIR = os.path.join(BASE_DIR, "static", "images")
 
+CATEGORIES = ["birds", "landscapes", "snakes"]
+
 # ==================================================
 # SMTP CONFIG
 # ==================================================
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-
 SMTP_USER = os.environ.get("SMTP_USER", "contact@wildlightstudiocr.com")
 SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")
 
@@ -73,29 +74,21 @@ TEXTS = {
 # UTILIDADES
 # ==================================================
 def get_lang():
-    if "lang" in request.args and request.args["lang"] in TEXTS:
+    if request.args.get("lang") in TEXTS:
         session["lang"] = request.args["lang"]
     return session.get("lang", "en")
 
 
 def render_page(template, **kwargs):
     lang = get_lang()
-    context = {
-        "texts": TEXTS[lang],
-        "lang": lang
-    }
+    context = {"texts": TEXTS[lang], "lang": lang}
     context.update(kwargs)
     return render_template(template, **context)
 
 
 def list_photos(folder):
-    """
-    Devuelve una lista de nombres de archivo EXACTOS (con extensión),
-    soportando .jpg / .JPG / .jpeg
-    """
     if not os.path.exists(folder):
         return []
-
     return sorted([
         f for f in os.listdir(folder)
         if f.lower().endswith((".jpg", ".jpeg"))
@@ -112,28 +105,17 @@ def get_related_photos(category, current_photo, limit=4):
 # ==================================================
 def send_email(name, email, message, photo=None):
     if not SMTP_PASSWORD:
-        print("❌ SMTP_PASSWORD no configurado")
         return
 
-    photo_label = photo if photo else "General inquiry"
-    subject = f"License request – {photo_label} | Wildlight Studio"
+    subject = f"License request – {photo or 'General inquiry'} | Wildlight Studio"
 
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = EMAIL_FROM
     msg["To"] = ", ".join(EMAIL_TO)
     msg["Reply-To"] = email
-
     msg.set_content(
-        f"""New contact request from Wildlight Studio
-
-Name: {name}
-Email: {email}
-Photo of interest: {photo_label}
-
-Message:
-{message}
-"""
+        f"Name: {name}\nEmail: {email}\nPhoto: {photo}\n\n{message}"
     )
 
     with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=15) as server:
@@ -151,8 +133,6 @@ def home():
 
 @app.route("/galleries")
 def galleries():
-    categories = ["birds", "landscapes", "snakes"]
-
     preview_images = {
         "birds": "keel-billed-toucan.jpg",
         "landscapes": "sun-set-cr.jpg",
@@ -161,25 +141,28 @@ def galleries():
 
     return render_page(
         "galleries.html",
-        categories=categories,
+        categories=CATEGORIES,
         preview_images=preview_images
     )
 
 
 @app.route("/gallery/<category>")
 def gallery(category):
+    if category not in CATEGORIES:
+        abort(404)
+
     image_dir = os.path.join(IMAGES_DIR, category, "thumbnails")
     photos = list_photos(image_dir)
 
-    return render_page(
-        "gallery.html",
-        category=category,
-        photos=photos
-    )
+    return render_page("gallery.html", category=category, photos=photos)
 
 
 @app.route("/photo/<category>/<photo_id>")
 def photo(category, photo_id):
+    image_dir = os.path.join(IMAGES_DIR, category, "thumbnails")
+    if photo_id not in list_photos(image_dir):
+        abort(404)
+
     return render_page(
         "photo.html",
         category=category,
@@ -187,25 +170,17 @@ def photo(category, photo_id):
         related_photos=get_related_photos(category, photo_id)
     )
 
-
 @app.route("/about")
 def about():
     return render_page("about.html")
-
 
 @app.route("/licensing")
 def licensing():
     return render_page("licensing.html")
 
-
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
-    photo = (
-        request.form.get("photo_id")
-        or request.form.get("photo")
-        or request.args.get("photo")
-        or ""
-    )
+    photo = request.form.get("photo") or request.args.get("photo", "")
 
     if request.method == "POST":
         email = request.form.get("email")
