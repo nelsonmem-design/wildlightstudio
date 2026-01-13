@@ -7,18 +7,25 @@
 {% block content %}
 <section class="gallery-page">
 
-    <h1>{{ category|capitalize }}</h1>
+    <header class="page-header">
+        <h1>{{ category|capitalize }}</h1>
+        <p class="page-intro">
+            Explore {{ category|capitalize }} photography by Wildlight Studio.
+        </p>
+    </header>
 
     {% if photos and photos|length > 0 %}
         <div class="photo-grid">
 
             {% for photo in photos %}
-                <a href="/photo/{{ category }}/{{ photo }}?lang={{ lang }}"
-                   class="photo-item">
+                <a
+                    href="/photo/{{ category }}/{{ photo }}?lang={{ lang }}"
+                    class="photo-item"
+                    aria-label="View {{ category|capitalize }} photo {{ photo }}">
 
                     <img
                         src="/static/images/{{ category }}/thumbnails/{{ photo }}.jpg"
-                        alt="{{ category|capitalize }} wildlife photo {{ photo }}"
+                        alt="{{ category|capitalize }} wildlife photo {{ photo }} by Wildlight Studio"
                         loading="lazy"
                         width="400"
                         height="300">
@@ -28,7 +35,9 @@
 
         </div>
     {% else %}
-        <p>No photos available in this gallery yet.</p>
+        <p class="empty-gallery">
+            No photos available in this gallery yet.
+        </p>
     {% endif %}
 
 </section>

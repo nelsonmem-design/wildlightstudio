@@ -7,24 +7,35 @@ Galleries | Wildlight Studio
 {% block content %}
 <section class="galleries-page">
 
-    <h1>Photo Galleries</h1>
-    <p>Explore wildlife photography collections by category.</p>
+    <header class="page-header">
+        <h1>Photo Galleries</h1>
+        <p class="page-intro">
+            Explore curated wildlife and nature photography collections by category.
+        </p>
+    </header>
 
-    <div class="photo-grid">
+    <div class="photo-grid galleries-grid">
 
         {% for category in categories %}
-            {% if preview_images[category] is defined %}
-                <a href="/gallery/{{ category }}?lang={{ lang }}"
-                   class="gallery-card">
+            {% if preview_images.get(category) %}
+                <a
+                    href="/gallery/{{ category }}?lang={{ lang }}"
+                    class="gallery-card"
+                    aria-label="{{ category|capitalize }} photo gallery">
 
-                    <img
-                        src="/static/images/{{ category }}/thumbnails/{{ preview_images[category] }}"
-                        alt="{{ category|capitalize }} wildlife photography gallery"
-                        loading="lazy"
-                        width="400"
-                        height="300">
+                    <figure class="gallery-preview">
+                        <img
+                            src="/static/images/{{ category }}/thumbnails/{{ preview_images[category] }}"
+                            alt="{{ category|capitalize }} wildlife photography gallery by Wildlight Studio"
+                            loading="lazy"
+                            width="400"
+                            height="300">
 
-                    <h2>{{ category|capitalize }}</h2>
+                        <figcaption class="gallery-title">
+                            <h2>{{ category|capitalize }}</h2>
+                        </figcaption>
+                    </figure>
+
                 </a>
             {% endif %}
         {% endfor %}
