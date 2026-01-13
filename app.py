@@ -148,7 +148,7 @@ def galleries():
 
     preview_images = {
         "birds": "keel-billed-toucan.jpg",
-        "landscapes": "mountain-lake.jpg"
+        "landscapes": "sun-set-cr.jpg"
     }
 
     return render_page(
