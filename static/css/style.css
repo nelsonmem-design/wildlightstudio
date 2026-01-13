@@ -249,3 +249,58 @@ hr {
     border-radius: 10px;
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
+/* =========================
+   CONTACT PAGE – FIX FINAL
+========================= */
+
+.contact-page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: block;
+}
+
+.contact-form {
+    display: block;
+}
+
+.contact-form label {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--bg-secondary);
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+.contact-form textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: 2px solid var(--accent);
+}
+
+.contact-form .cta {
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Evita herencias de grid/flex */
+.contact-page,
+.contact-form,
+.contact-form * {
+    box-sizing: border-box;
+}
