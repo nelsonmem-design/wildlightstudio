@@ -1,6 +1,6 @@
-/* =========================
+/* ==================================================
    VARIABLES
-========================= */
+================================================== */
 :root {
     --bg-main: #0b0f14;
     --bg-secondary: #111827;
@@ -9,10 +9,12 @@
     --accent: #22c55e;
 }
 
-/* =========================
+/* ==================================================
    BASE / RESET
-========================= */
-* {
+================================================== */
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
@@ -34,9 +36,9 @@ a {
     transition: color 0.2s ease;
 }
 
-/* =========================
+/* ==================================================
    TIPOGRAFÍA
-========================= */
+================================================== */
 h1, h2 {
     font-family: 'Playfair Display', serif;
 }
@@ -51,9 +53,9 @@ p {
     line-height: 1.6;
 }
 
-/* =========================
+/* ==================================================
    NAVBAR
-========================= */
+================================================== */
 .navbar {
     position: sticky;
     top: 0;
@@ -86,18 +88,18 @@ p {
     opacity: 0.8;
 }
 
-/* =========================
+/* ==================================================
    LAYOUT GENERAL
-========================= */
+================================================== */
 main {
     max-width: 1200px;
     margin: auto;
     padding: 60px 20px 40px;
 }
 
-/* =========================
+/* ==================================================
    HERO (HOME)
-========================= */
+================================================== */
 .hero {
     text-align: center;
     padding: 100px 20px 80px;
@@ -116,21 +118,21 @@ main {
     flex-wrap: wrap;
 }
 
-/* =========================
-   GALERÍAS (CLAVE)
-========================= */
+/* ==================================================
+   GALERÍAS (CRÍTICO)
+================================================== */
 .gallery-grid,
 .photo-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 24px;
 }
 
-/* Contenedores */
+/* Contenedores de imagen */
 .gallery-card,
 .photo-item {
     display: block;
-    font-size: 0;               /* 🔥 elimina texto residual */
+    font-size: 0; /* elimina texto residual */
 }
 
 /* Imágenes */
@@ -150,7 +152,7 @@ main {
     opacity: 0.92;
 }
 
-/* Títulos de categorías */
+/* Títulos de categoría */
 .gallery-card h2 {
     margin-top: 14px;
     font-size: 1.2rem;
@@ -158,9 +160,9 @@ main {
     font-family: 'Playfair Display', serif;
 }
 
-/* =========================
+/* ==================================================
    PHOTO DETAIL PAGE
-========================= */
+================================================== */
 .photo-page {
     display: grid;
     gap: 50px;
@@ -174,8 +176,8 @@ main {
 }
 
 .photo-wrapper img {
-    max-height: 80vh;
     width: 100%;
+    max-height: 80vh;
     object-fit: contain;
     border-radius: 14px;
 }
@@ -200,9 +202,9 @@ main {
     opacity: 0.65;
 }
 
-/* =========================
+/* ==================================================
    BREADCRUMB
-========================= */
+================================================== */
 .breadcrumb {
     font-size: 0.85rem;
     margin-bottom: 30px;
@@ -221,9 +223,9 @@ main {
     opacity: 0.6;
 }
 
-/* =========================
+/* ==================================================
    RELATED PHOTOS
-========================= */
+================================================== */
 .related-section h2 {
     margin-bottom: 20px;
     font-size: 1.4rem;
@@ -232,13 +234,13 @@ main {
 hr {
     border: none;
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255,255,255,0.1);
     margin: 60px 0;
 }
 
-/* =========================
+/* ==================================================
    BOTONES / CTA
-========================= */
+================================================== */
 .cta {
     display: inline-block;
     margin-top: 20px;
@@ -249,10 +251,15 @@ hr {
     border-radius: 10px;
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
-/* =========================
-   CONTACT PAGE – FIX FINAL
-========================= */
 
+.cta:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+/* ==================================================
+   CONTACT PAGE – BLINDADO
+================================================== */
 .contact-page {
     max-width: 640px;
     margin: 0 auto;
@@ -293,8 +300,8 @@ hr {
 }
 
 .contact-form .cta {
-    margin-top: 30px;
     width: 100%;
+    margin-top: 30px;
     text-align: center;
 }
 
@@ -303,4 +310,27 @@ hr {
 .contact-form,
 .contact-form * {
     box-sizing: border-box;
+}
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+@media (max-width: 768px) {
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    main {
+        padding: 40px 16px;
+    }
+
+    .photo-wrapper img {
+        max-height: 60vh;
+    }
+
+    .cta {
+        width: 100%;
+        text-align: center;
+    }
 }
