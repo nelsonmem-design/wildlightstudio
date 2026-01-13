@@ -30,6 +30,7 @@ img {
 
 a {
     color: inherit;
+    text-decoration: none;
     transition: color 0.2s ease;
 }
 
@@ -71,7 +72,6 @@ p {
 }
 
 .nav-links a {
-    text-decoration: none;
     margin-left: 20px;
     font-size: 0.95rem;
 }
@@ -117,37 +117,45 @@ main {
 }
 
 /* =========================
-   GALERÍAS
+   GALERÍAS (CLAVE)
 ========================= */
 .gallery-grid,
 .photo-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 24px;
 }
 
-.gallery-card {
-    text-decoration: none;
-    transition: transform 0.3s ease;
+/* Contenedores */
+.gallery-card,
+.photo-item {
+    display: block;
+    font-size: 0;               /* 🔥 elimina texto residual */
 }
 
-.gallery-card:hover {
-    transform: translateY(-6px);
-}
-
+/* Imágenes */
 .gallery-card img,
 .photo-grid img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
     border-radius: 14px;
-}
-
-.photo-grid img {
-    cursor: pointer;
+    background-color: var(--bg-secondary);
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
+.gallery-card:hover img,
 .photo-grid img:hover {
     transform: scale(1.04);
     opacity: 0.92;
+}
+
+/* Títulos de categorías */
+.gallery-card h2 {
+    margin-top: 14px;
+    font-size: 1.2rem;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
 }
 
 /* =========================
@@ -167,6 +175,7 @@ main {
 
 .photo-wrapper img {
     max-height: 80vh;
+    width: 100%;
     object-fit: contain;
     border-radius: 14px;
 }
@@ -198,10 +207,6 @@ main {
     font-size: 0.85rem;
     margin-bottom: 30px;
     opacity: 0.75;
-}
-
-.breadcrumb a {
-    text-decoration: none;
 }
 
 .breadcrumb a:hover {
@@ -240,76 +245,7 @@ hr {
     padding: 14px 22px;
     background-color: var(--accent);
     color: var(--bg-main);
-    text-decoration: none;
     font-weight: 600;
     border-radius: 10px;
     transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.cta:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
-}
-
-.cta.secondary {
-    background: transparent;
-    color: var(--accent);
-    border: 2px solid var(--accent);
-}
-
-.cta.secondary:hover {
-    background-color: var(--accent);
-    color: var(--bg-main);
-}
-
-/* =========================
-   CONTACT / ABOUT / LICENSING
-========================= */
-.contact-page,
-.about-page,
-.licensing-page {
-    max-width: 800px;
-    margin: auto;
-}
-
-.about-highlight,
-.license-card {
-    background-color: var(--bg-secondary);
-    padding: 30px;
-    border-radius: 16px;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 768px) {
-
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .nav-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-    }
-
-    h1 {
-        font-size: 2rem;
-    }
-
-    main {
-        padding: 40px 16px;
-    }
-
-    .photo-wrapper img {
-        max-height: 60vh;
-    }
-
-    .cta {
-        width: 100%;
-        text-align: center;
-    }
 }
