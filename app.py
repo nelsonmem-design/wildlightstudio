@@ -88,17 +88,26 @@ def render_page(template, **kwargs):
     return render_template(template, **context)
 
 
-def get_related_photos(category, current_photo, limit=4):
-    folder = os.path.join(IMAGES_DIR, category, "thumbnails")
+def list_photos(folder):
+    """
+    Devuelve una lista de nombres de fotos SIN extensión,
+    normalizando .jpg / .JPG / .jpeg
+    """
     if not os.path.exists(folder):
         return []
 
-    photos = [
-        f.replace(".jpg", "")
-        for f in sorted(os.listdir(folder))
-        if f.lower().endswith(".jpg") and f != f"{current_photo}.jpg"
-    ]
-    return photos[:limit]
+    photos = []
+    for f in sorted(os.listdir(folder)):
+        if f.lower().endswith(".jpg"):
+            name = os.path.splitext(f)[0]
+            photos.append(name)
+    return photos
+
+
+def get_related_photos(category, current_photo, limit=4):
+    folder = os.path.join(IMAGES_DIR, category, "thumbnails")
+    photos = list_photos(folder)
+    return [p for p in photos if p != current_photo][:limit]
 
 # ==================================================
 # EMAIL
@@ -150,7 +159,6 @@ def galleries():
         "birds": "keel-billed-toucan.jpg",
         "landscapes": "sun-set-cr.jpg",
         "snakes": "rattlesnake.jpg"
-        
     }
 
     return render_page(
@@ -163,22 +171,13 @@ def galleries():
 @app.route("/gallery/<category>")
 def gallery(category):
     image_dir = os.path.join(IMAGES_DIR, category, "thumbnails")
-
-    if not os.path.exists(image_dir):
-        return render_page("gallery.html", category=category, photos=[])
-
-    photos = [
-        f.replace(".jpg", "")
-        for f in sorted(os.listdir(image_dir))
-        if f.lower().endswith(".jpg")
-    ]
+    photos = list_photos(image_dir)
 
     return render_page(
         "gallery.html",
         category=category,
         photos=photos
     )
-
 
 
 @app.route("/photo/<category>/<photo_id>")
