@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{ category|capitalize }} Wildlife Photo {{ photo_id }} | Licensing & Fine Art Prints | Wildlight Studio
+{{ category|capitalize }} Wildlife Photo | Licensing & Fine Art Prints | Wildlight Studio
 {% endblock %}
 
 {% block content %}
@@ -23,7 +23,12 @@
         <span aria-hidden="true">›</span>
 
         <span class="current" aria-current="page">
-            {{ photo_id|replace('-', ' ')|capitalize }}
+            {{ photo_id
+                | replace('.jpg','')
+                | replace('.jpeg','')
+                | replace('-', ' ')
+                | capitalize
+            }}
         </span>
     </nav>
 
@@ -33,16 +38,18 @@
     {% if photo_id %}
     <figure class="photo-wrapper">
         <img
-            src="/static/images/{{ category }}/thumbnails/{{ photo_id }}.jpg"
-            alt="{{ category|capitalize }} wildlife photograph in Costa Rica by Wildlight Studio"
+            src="/static/images/{{ category }}/thumbnails/{{ photo_id }}"
+            alt="{{ category|capitalize }} wildlife photograph by Wildlight Studio"
             loading="lazy"
             width="1200"
             height="800"
             itemprop="contentUrl">
 
-        <meta itemprop="name" content="{{ category|capitalize }} Wildlife Photograph {{ photo_id }}">
+        <meta itemprop="name"
+              content="{{ category|capitalize }} Wildlife Photograph">
         <meta itemprop="author" content="Wildlight Studio">
-        <meta itemprop="license" content="https://wildlightstudiocr.com/licensing">
+        <meta itemprop="license"
+              content="https://wildlightstudiocr.com/licensing">
     </figure>
     {% else %}
         <p class="photo-error">
@@ -56,21 +63,28 @@
     <div class="photo-info">
 
         <h1 itemprop="headline">
-            {{ photo_id|replace('-', ' ')|capitalize }}
+            {{ photo_id
+                | replace('.jpg','')
+                | replace('.jpeg','')
+                | replace('-', ' ')
+                | capitalize
+            }}
         </h1>
 
         <p class="photo-context">
-            High-quality wildlife photography of {{ category|capitalize }} taken in Costa Rica.
+            High-quality {{ category|capitalize }} wildlife photography taken in Costa Rica.
             Available for editorial licensing and fine art prints.
         </p>
 
         <p class="photo-meta">
-            <strong>Photo ID:</strong> {{ category }}-{{ photo_id }} ·
-            <strong>Category:</strong> {{ category|capitalize }}
+            <strong>File:</strong>
+            {{ photo_id }} ·
+            <strong>Category:</strong>
+            {{ category|capitalize }}
         </p>
 
         <p class="photo-caption" itemprop="description">
-            Professional {{ category }} wildlife photograph by Wildlight Studio.
+            Professional wildlife photograph by Wildlight Studio.
             Suitable for editorial, commercial, conservation, and educational use.
         </p>
 
@@ -106,8 +120,8 @@
                 {% for rp in related_photos %}
                     <a href="/photo/{{ category }}/{{ rp }}?lang={{ lang }}">
                         <img
-                            src="/static/images/{{ category }}/thumbnails/{{ rp }}.jpg"
-                            alt="Related {{ category|capitalize }} wildlife photo by Wildlight Studio"
+                            src="/static/images/{{ category }}/thumbnails/{{ rp }}"
+                            alt="Related {{ category|capitalize }} wildlife photo"
                             loading="lazy"
                             width="400"
                             height="300">
@@ -131,7 +145,7 @@
     "@type": "Organization",
     "name": "Wildlight Studio"
   },
-  "contentUrl": "https://wildlightstudiocr.com/static/images/{{ category }}/thumbnails/{{ photo_id }}.jpg",
+  "contentUrl": "https://wildlightstudiocr.com/static/images/{{ category }}/thumbnails/{{ photo_id }}",
   "url": "https://wildlightstudiocr.com/photo/{{ category }}/{{ photo_id }}",
   "license": "https://wildlightstudiocr.com/licensing",
   "acquireLicensePage": "https://wildlightstudiocr.com/contact?photo={{ category }}-{{ photo_id }}",
