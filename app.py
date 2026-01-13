@@ -178,6 +178,7 @@ def gallery(category):
     )
 
 
+
 @app.route("/photo/<category>/<photo_id>")
 def photo(category, photo_id):
     return render_page(
