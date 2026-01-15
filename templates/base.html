@@ -17,16 +17,11 @@
     <!-- ==================================================
          SEO MULTI-LANGUAGE (HREFLANG)
     ================================================== -->
-    <link rel="alternate"
-          hreflang="en"
+    <link rel="alternate" hreflang="en"
           href="https://wildlightstudiocr.com{{ request.path }}?lang=en">
-
-    <link rel="alternate"
-          hreflang="es"
+    <link rel="alternate" hreflang="es"
           href="https://wildlightstudiocr.com{{ request.path }}?lang=es">
-
-    <link rel="alternate"
-          hreflang="x-default"
+    <link rel="alternate" hreflang="x-default"
           href="https://wildlightstudiocr.com{{ request.path }}">
 
     <!-- ==================================================
@@ -34,7 +29,7 @@
     ================================================== -->
     <title>
         {% block title %}
-            Wildlight Studio | Wildlife & Nature Photography
+        Wildlight Studio | Wildlife & Nature Photography
         {% endblock %}
     </title>
 
@@ -43,7 +38,6 @@
           'Wildlife and nature photography by Wildlight Studio. Licensing and fine art prints available.'
           ) }}">
 
-    <!-- Canonical URL (por idioma) -->
     <link rel="canonical"
           href="https://wildlightstudiocr.com{{ request.path }}?lang={{ lang }}">
 
@@ -66,14 +60,16 @@
     <!-- ==================================================
          STYLES
     ================================================== -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 
     <!-- ==================================================
          FONTS
     ================================================== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap"
+          rel="stylesheet">
 
     <!-- ==================================================
          STRUCTURED DATA (JSON-LD)
@@ -129,6 +125,31 @@
 <main>
     {% block content %}{% endblock %}
 </main>
+
+<!-- ==================================================
+     HERO BACKGROUND ROTATION (HOME ONLY)
+================================================== -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const hero = document.getElementById("hero");
+    if (!hero) return;
+
+    const images = [
+        "/static/images/home/chocuaco.jpg",
+        "/static/images/home/cuco-isla-coco.jpg",
+        "/static/images/home/espiritu-santo.jpg",
+        "/static/images/home/patas-amarillas.jpg"
+    ];
+
+    let index = 0;
+    hero.style.backgroundImage = `url('${images[index]}')`;
+
+    setInterval(() => {
+        index = (index + 1) % images.length;
+        hero.style.backgroundImage = `url('${images[index]}')`;
+    }, 7000);
+});
+</script>
 
 </body>
 </html>

@@ -103,7 +103,12 @@ main {
 .hero {
     position: relative;
     min-height: 90vh;
-    padding: 120px 20px 100px;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    transition: background-image 1.2s ease-in-out;
 
     display: flex;
     flex-direction: column;
@@ -111,13 +116,9 @@ main {
     align-items: center;
 
     text-align: center;
-    color: var(--text-main);
-
-    background-image: url("/static/images/home/chocuaco.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    padding: 120px 20px 100px;
 }
+
 
 /* Overlay */
 .hero::before {
