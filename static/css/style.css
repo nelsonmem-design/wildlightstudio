@@ -98,28 +98,80 @@ main {
 }
 
 /* ==================================================
-   HERO (HOME)
+   HOME – HERO CON IMAGEN
 ================================================== */
 .hero {
+    position: relative;
+    min-height: 90vh;
+    padding: 120px 20px 100px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     text-align: center;
-    padding: 100px 20px 80px;
+    color: var(--text-main);
+
+    background-image: url("/static/images/home/chocuaco.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Overlay */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        rgba(11, 15, 20, 0.55),
+        rgba(11, 15, 20, 0.85)
+    );
+    z-index: 1;
+}
+
+/* Contenido encima */
+.hero > * {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+}
+
+.hero h1 {
+    font-size: 3.2rem;
 }
 
 .hero-subtitle {
-    max-width: 700px;
+    max-width: 720px;
     margin: 20px auto 40px;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
+    line-height: 1.7;
 }
 
 .hero-actions {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 24px;
     flex-wrap: wrap;
 }
 
 /* ==================================================
-   GALERÍAS (CRÍTICO)
+   HOME INTRO
+================================================== */
+.home-intro {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 60px 20px 20px;
+    text-align: center;
+}
+
+.home-intro p {
+    font-size: 1.05rem;
+}
+
+/* ==================================================
+   GALERÍAS
 ================================================== */
 .gallery-grid,
 .photo-grid {
@@ -128,14 +180,12 @@ main {
     gap: 24px;
 }
 
-/* Contenedores de imagen */
 .gallery-card,
 .photo-item {
     display: block;
     font-size: 0; /* elimina texto residual */
 }
 
-/* Imágenes */
 .gallery-card img,
 .photo-grid img {
     width: 100%;
@@ -152,16 +202,14 @@ main {
     opacity: 0.92;
 }
 
-/* Títulos de categoría */
 .gallery-card h2 {
     margin-top: 14px;
     font-size: 1.2rem;
     text-align: center;
-    font-family: 'Playfair Display', serif;
 }
 
 /* ==================================================
-   PHOTO DETAIL PAGE
+   PHOTO DETAIL
 ================================================== */
 .photo-page {
     display: grid;
@@ -192,10 +240,6 @@ main {
     opacity: 0.75;
 }
 
-.photo-caption {
-    margin-bottom: 30px;
-}
-
 .photo-note {
     margin-top: 20px;
     font-size: 0.85rem;
@@ -215,31 +259,8 @@ main {
     color: var(--accent);
 }
 
-.breadcrumb span {
-    margin: 0 6px;
-}
-
-.breadcrumb .current {
-    opacity: 0.6;
-}
-
 /* ==================================================
-   RELATED PHOTOS
-================================================== */
-.related-section h2 {
-    margin-bottom: 20px;
-    font-size: 1.4rem;
-}
-
-hr {
-    border: none;
-    height: 1px;
-    background: rgba(255,255,255,0.1);
-    margin: 60px 0;
-}
-
-/* ==================================================
-   BOTONES / CTA
+   CTA
 ================================================== */
 .cta {
     display: inline-block;
@@ -258,17 +279,12 @@ hr {
 }
 
 /* ==================================================
-   CONTACT PAGE – BLINDADO
+   CONTACT PAGE (PROTEGIDO)
 ================================================== */
 .contact-page {
     max-width: 640px;
     margin: 0 auto;
     padding: 40px 20px;
-    display: block;
-}
-
-.contact-form {
-    display: block;
 }
 
 .contact-form label {
@@ -286,30 +302,15 @@ hr {
     border: none;
     background-color: var(--bg-secondary);
     color: var(--text-main);
-    font-size: 0.95rem;
 }
 
 .contact-form textarea {
-    resize: vertical;
     min-height: 140px;
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus {
     outline: 2px solid var(--accent);
-}
-
-.contact-form .cta {
-    width: 100%;
-    margin-top: 30px;
-    text-align: center;
-}
-
-/* Evita herencias de grid/flex */
-.contact-page,
-.contact-form,
-.contact-form * {
-    box-sizing: border-box;
 }
 
 /* ==================================================
@@ -321,12 +322,21 @@ hr {
         font-size: 2rem;
     }
 
-    main {
-        padding: 40px 16px;
+    .hero {
+        min-height: 75vh;
+        padding: 80px 16px 60px;
     }
 
-    .photo-wrapper img {
-        max-height: 60vh;
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    main {
+        padding: 40px 16px;
     }
 
     .cta {
