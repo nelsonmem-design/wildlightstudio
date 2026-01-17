@@ -389,3 +389,15 @@ main {
         text-align: center;
     }
 }
+/* ===== DEBUG / FIX VISIBILITY ===== */
+main,
+section {
+    display: block;
+}
+
+.gallery-page,
+.home-intro {
+    min-height: 200px;
+    visibility: visible;
+    opacity: 1;
+}
