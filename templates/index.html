@@ -1,46 +1,69 @@
 {% extends "base.html" %}
 
 {% block title %}
-Wildlight Studio | Wildlife & Nature Photography
+Wildlight Studio Costa Rica | Wildlife & Nature Photography
+{% endblock %}
+
+{% block og_title %}
+Wildlight Studio Costa Rica | Wildlife & Nature Photography
 {% endblock %}
 
 {% block content %}
 
-<!-- =========================
+<!-- ==================================================
      HERO / HOME HEADER
-========================= -->
-<section class="hero" id="hero">
-    <h1>{{ texts.home_title }}</h1>
+================================================== -->
+<section class="hero" id="hero" role="banner">
 
-    <p class="hero-subtitle">
-        {{ texts.home_subtitle }} specializing in birds, wildlife,
-        and natural habitats. Images available for licensing and fine art prints.
-    </p>
+    <div class="hero-content">
+        <h1>{{ texts.home_title }}</h1>
 
-    <div class="hero-actions">
-        <a href="/galleries?lang={{ lang }}" class="cta">
-            {{ texts.cta_galleries }}
-        </a>
+        <p class="hero-subtitle">
+            {{ texts.home_subtitle }}
+            specializing in birds, wildlife, and natural habitats.
+            Images available for licensing and fine art prints.
+        </p>
 
-        <a href="/contact?lang={{ lang }}" class="cta secondary">
-            License an Image
-        </a>
+        <div class="hero-actions">
+            <a href="/galleries?lang={{ lang }}" class="cta">
+                {{ texts.cta_galleries }}
+            </a>
+
+            <a href="/contact?lang={{ lang }}" class="cta secondary">
+                {{ texts.cta_license | default('License an Image') }}
+            </a>
+        </div>
     </div>
+
 </section>
 
-
-<!-- =========================
-     HOME INTRO
-========================= -->
+<!-- ==================================================
+     HOME INTRO / ABOUT
+================================================== -->
 <section class="home-intro">
 
-    <p>
-        Wildlight Studio is a wildlife photography project focused on
-        documenting birds and nature with respect, patience, and light.
-        Photographs are available for editorial, commercial, conservation,
-        and educational use.
-    </p>
+    <div class="container">
+        <p>
+            <strong>Wildlight Studio</strong> is a wildlife photography project
+            based in Costa Rica, focused on documenting birds and nature with
+            respect, patience, and natural light.
+        </p>
+
+        <p>
+            Photographs are available for editorial, commercial, conservation,
+            and educational use, as well as fine art prints.
+        </p>
+    </div>
 
 </section>
+
+<!-- ==================================================
+     FEATURED WORK (OPTIONAL / FUTURE)
+================================================== -->
+{# 
+<section class="featured-work">
+    <h2>Featured Wildlife</h2>
+</section>
+#}
 
 {% endblock %}

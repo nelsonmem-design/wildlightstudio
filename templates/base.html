@@ -29,33 +29,43 @@
     ================================================== -->
     <title>
         {% block title %}
-        Wildlight Studio | Wildlife & Nature Photography
+        Wildlight Studio Costa Rica | Wildlife & Nature Photography
         {% endblock %}
     </title>
 
     <meta name="description"
           content="{{ meta_description | default(
-          'Wildlife and nature photography by Wildlight Studio. Licensing and fine art prints available.'
+          'Wildlife and nature photography in Costa Rica by Wildlight Studio. Licensing and fine art prints available.'
           ) }}">
 
     <link rel="canonical"
           href="https://wildlightstudiocr.com{{ request.path }}?lang={{ lang }}">
 
     <!-- ==================================================
+         FAVICON / ICONS
+    ================================================== -->
+    <link rel="icon" type="image/svg+xml"
+          href="{{ url_for('static', filename='assets/img/logo/wildlight-studio-icon.svg') }}">
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="{{ url_for('static', filename='assets/img/logo/wildlight-studio-icon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180"
+          href="{{ url_for('static', filename='assets/img/logo/wildlight-studio-icon-180x180.png') }}">
+
+    <!-- ==================================================
          OPEN GRAPH / SOCIAL
     ================================================== -->
-    <meta property="og:site_name" content="Wildlight Studio">
+    <meta property="og:site_name" content="Wildlight Studio Costa Rica">
     <meta property="og:type" content="website">
     <meta property="og:title"
-          content="{% block og_title %}Wildlight Studio | Wildlife Photography{% endblock %}">
+          content="{% block og_title %}Wildlight Studio Costa Rica | Wildlife Photography{% endblock %}">
     <meta property="og:description"
           content="{{ meta_description | default(
-          'Wildlife and nature photography by Wildlight Studio.'
+          'Wildlife and nature photography in Costa Rica by Wildlight Studio.'
           ) }}">
     <meta property="og:url"
           content="https://wildlightstudiocr.com{{ request.path }}">
     <meta property="og:image"
-          content="https://wildlightstudiocr.com/static/images/og-cover.jpg">
+          content="https://wildlightstudiocr.com/static/assets/img/og/og-cover.jpg">
 
     <!-- ==================================================
          STYLES
@@ -78,10 +88,10 @@
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Wildlight Studio",
+      "name": "Wildlight Studio Costa Rica",
       "url": "https://wildlightstudiocr.com",
-      "logo": "https://wildlightstudiocr.com/static/images/logo.png",
-      "description": "Wildlife and nature photography by Wildlight Studio. Licensing and fine art prints available.",
+      "logo": "https://wildlightstudiocr.com/static/assets/img/logo/wildlight-studio-logo-black.png",
+      "description": "Wildlife and nature photography in Costa Rica by Wildlight Studio.",
       "email": "contact@wildlightstudiocr.com"
     }
     </script>
@@ -90,11 +100,12 @@
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Wildlight Studio",
+      "name": "Wildlight Studio Costa Rica",
       "url": "https://wildlightstudiocr.com"
     }
     </script>
 
+    {% block head %}{% endblock %}
 </head>
 
 <body>
@@ -103,8 +114,19 @@
      NAVBAR
 ================================================== -->
 <nav class="navbar">
-    <div class="brand">Wildlight Studio</div>
 
+    <!-- BRAND / LOGO -->
+    <div class="brand">
+        <a href="/?lang={{ lang }}" aria-label="Wildlight Studio Costa Rica">
+            <img
+                src="{{ url_for('static', filename='assets/img/logo/wildlight-studio-logo-black.webp') }}"
+                alt="Wildlight Studio Costa Rica"
+                height="60"
+                loading="eager">
+        </a>
+    </div>
+
+    <!-- NAV LINKS -->
     <div class="nav-links">
         <a href="/?lang={{ lang }}">Home</a>
         <a href="/galleries?lang={{ lang }}">Galleries</a>
@@ -113,43 +135,5 @@
         <a href="/contact?lang={{ lang }}">Contact</a>
     </div>
 
+    <!-- LANGUAGE SWITCH -->
     <div class="language-switch">
-        <a href="?lang=en" aria-label="English version">EN</a> |
-        <a href="?lang=es" aria-label="Versión en español">ES</a>
-    </div>
-</nav>
-
-<!-- ==================================================
-     MAIN CONTENT
-================================================== -->
-<main>
-    {% block content %}{% endblock %}
-</main>
-
-<!-- ==================================================
-     HERO BACKGROUND ROTATION (HOME ONLY)
-================================================== -->
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const hero = document.getElementById("hero");
-    if (!hero) return;
-
-    const images = [
-        "/static/images/home/chocuaco.jpg",
-        "/static/images/home/cuco-isla-coco.jpg",
-        "/static/images/home/espiritu-santo.jpg",
-        "/static/images/home/patas-amarillas.jpg"
-    ];
-
-    let index = 0;
-    hero.style.backgroundImage = `url('${images[index]}')`;
-
-    setInterval(() => {
-        index = (index + 1) % images.length;
-        hero.style.backgroundImage = `url('${images[index]}')`;
-    }, 7000);
-});
-</script>
-
-</body>
-</html>

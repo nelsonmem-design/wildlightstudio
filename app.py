@@ -10,8 +10,10 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "wildlight-secret-key")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-IMAGES_DIR = os.path.join(BASE_DIR, "static", "images")
+STATIC_DIR = os.path.join(BASE_DIR, "static")
+IMAGES_DIR = os.path.join(STATIC_DIR, "assets", "img")
 
+# Categorías disponibles
 CATEGORIES = ["birds", "landscapes", "snakes"]
 
 # ==================================================
@@ -74,14 +76,18 @@ TEXTS = {
 # UTILIDADES
 # ==================================================
 def get_lang():
-    if request.args.get("lang") in TEXTS:
-        session["lang"] = request.args["lang"]
+    lang = request.args.get("lang")
+    if lang in TEXTS:
+        session["lang"] = lang
     return session.get("lang", "en")
 
 
 def render_page(template, **kwargs):
     lang = get_lang()
-    context = {"texts": TEXTS[lang], "lang": lang}
+    context = {
+        "texts": TEXTS[lang],
+        "lang": lang
+    }
     context.update(kwargs)
     return render_template(template, **context)
 
@@ -91,7 +97,7 @@ def list_photos(folder):
         return []
     return sorted([
         f for f in os.listdir(folder)
-        if f.lower().endswith((".jpg", ".jpeg"))
+        if f.lower().endswith((".jpg", ".jpeg", ".webp"))
     ])
 
 
@@ -114,8 +120,12 @@ def send_email(name, email, message, photo=None):
     msg["From"] = EMAIL_FROM
     msg["To"] = ", ".join(EMAIL_TO)
     msg["Reply-To"] = email
+
     msg.set_content(
-        f"Name: {name}\nEmail: {email}\nPhoto: {photo}\n\n{message}"
+        f"Name: {name}\n"
+        f"Email: {email}\n"
+        f"Photo: {photo or 'N/A'}\n\n"
+        f"{message}"
     )
 
     with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=15) as server:
@@ -124,7 +134,7 @@ def send_email(name, email, message, photo=None):
         server.send_message(msg)
 
 # ==================================================
-# RUTAS
+# ROUTES
 # ==================================================
 @app.route("/")
 def home():
@@ -134,9 +144,9 @@ def home():
 @app.route("/galleries")
 def galleries():
     preview_images = {
-        "birds": "keel-billed-toucan.jpg",
-        "landscapes": "sun-set-cr.jpg",
-        "snakes": "eyelash-viper-1.jpg"
+        "birds": "birds-preview.webp",
+        "landscapes": "landscapes-preview.webp",
+        "snakes": "snakes-preview.webp"
     }
 
     return render_page(
@@ -151,16 +161,21 @@ def gallery(category):
     if category not in CATEGORIES:
         abort(404)
 
-    image_dir = os.path.join(IMAGES_DIR, category, "thumbnails")
-    photos = list_photos(image_dir)
+    folder = os.path.join(IMAGES_DIR, category, "thumbnails")
+    photos = list_photos(folder)
 
-    return render_page("gallery.html", category=category, photos=photos)
+    return render_page(
+        "gallery.html",
+        category=category,
+        photos=photos
+    )
 
 
 @app.route("/photo/<category>/<photo_id>")
 def photo(category, photo_id):
-    image_dir = os.path.join(IMAGES_DIR, category, "thumbnails")
-    if photo_id not in list_photos(image_dir):
+    folder = os.path.join(IMAGES_DIR, category, "thumbnails")
+
+    if photo_id not in list_photos(folder):
         abort(404)
 
     return render_page(
@@ -170,13 +185,16 @@ def photo(category, photo_id):
         related_photos=get_related_photos(category, photo_id)
     )
 
+
 @app.route("/about")
 def about():
     return render_page("about.html")
 
+
 @app.route("/licensing")
 def licensing():
     return render_page("licensing.html")
+
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
