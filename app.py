@@ -30,19 +30,45 @@ EMAIL_TO = [
 ]
 
 # ==================================================
-# TEXTS (I18N)
+# TEXTS / I18N
 # ==================================================
 TEXTS = {
     "en": {
         "home_title": "Wildlight Studio",
         "home_subtitle": "Wildlife & nature photography",
         "cta_galleries": "Explore Galleries",
+        "cta_license": "License an Image",
+
+        "about_title": "About Wildlight Studio",
+
+        "licensing_title": "Licensing & Usage",
+        "licensing_p1": "All photographs are protected by copyright.",
+        "licensing_p2": "Images are available for editorial and commercial use.",
+        "licensing_p3": "Contact me for licensing details.",
+        "licensing_cta": "Contact for Licensing",
+
+        "contact_title": "Contact",
+        "contact_intro": "Interested in licensing an image or purchasing a print?",
+        "contact_success": "Thank you for your message. I’ll contact you shortly.",
         "send_request": "Send Request"
     },
     "es": {
         "home_title": "Wildlight Studio",
         "home_subtitle": "Fotografía de naturaleza y vida silvestre",
         "cta_galleries": "Explorar Galerías",
+        "cta_license": "Licenciar una imagen",
+
+        "about_title": "Sobre Wildlight Studio",
+
+        "licensing_title": "Licencias y Uso",
+        "licensing_p1": "Todas las fotografías están protegidas por derechos de autor.",
+        "licensing_p2": "Las imágenes están disponibles para uso editorial y comercial.",
+        "licensing_p3": "Contáctame para detalles de licencias.",
+        "licensing_cta": "Contacto para licencias",
+
+        "contact_title": "Contacto",
+        "contact_intro": "¿Interesado en licenciar una imagen o comprar una impresión?",
+        "contact_success": "Gracias por tu mensaje. Me pondré en contacto contigo pronto.",
         "send_request": "Enviar solicitud"
     }
 }
@@ -81,6 +107,31 @@ def get_related_photos(category, current_photo, limit=4):
     photos = list_photos(folder)
     return [p for p in photos if p != current_photo][:limit]
 
+
+def send_email(name, email, message, photo=None):
+    if not SMTP_PASSWORD:
+        return
+
+    subject = f"License request – {photo or 'General inquiry'} | Wildlight Studio"
+
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = EMAIL_FROM
+    msg["To"] = ", ".join(EMAIL_TO)
+    msg["Reply-To"] = email
+
+    msg.set_content(
+        f"Name: {name}\n"
+        f"Email: {email}\n"
+        f"Photo: {photo or 'N/A'}\n\n"
+        f"{message}"
+    )
+
+    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=15) as server:
+        server.starttls()
+        server.login(SMTP_USER, SMTP_PASSWORD)
+        server.send_message(msg)
+
 # ==================================================
 # ROUTES
 # ==================================================
@@ -91,7 +142,6 @@ def home():
 
 @app.route("/galleries")
 def galleries():
-    # USAMOS ARCHIVOS QUE SÍ EXISTEN
     preview_images = {
         "birds": "keel-billed-toucan.jpg",
         "landscapes": "sun-set-cr.jpg",
@@ -150,26 +200,14 @@ def contact():
     photo = request.form.get("photo") or request.args.get("photo", "")
 
     if request.method == "POST":
+        name = request.form.get("name", "N/A")
         email = request.form.get("email")
         message = request.form.get("message")
-        name = request.form.get("name", "N/A")
 
         if not email or not message:
             return render_page("contact.html", error=True, photo=photo)
 
-        if SMTP_PASSWORD:
-            msg = EmailMessage()
-            msg["Subject"] = f"License request – {photo or 'General inquiry'}"
-            msg["From"] = EMAIL_FROM
-            msg["To"] = ", ".join(EMAIL_TO)
-            msg["Reply-To"] = email
-            msg.set_content(message)
-
-            with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-                server.starttls()
-                server.login(SMTP_USER, SMTP_PASSWORD)
-                server.send_message(msg)
-
+        send_email(name, email, message, photo)
         return render_page("contact.html", success=True, photo=photo)
 
     return render_page("contact.html", photo=photo)

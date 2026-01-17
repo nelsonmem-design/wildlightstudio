@@ -27,7 +27,7 @@
         </a>
     </div>
 
-    <!-- TOGGLE (DEBE IR ANTES DEL MENU) -->
+    <!-- TOGGLE -->
     <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
 
     <!-- NAV LINKS -->
@@ -45,11 +45,10 @@
         </div>
     </div>
 
-    <!-- HAMBURGER ICON (LABEL VA DESPUÉS) -->
+    <!-- HAMBURGER ICON -->
     <label for="nav-toggle"
            class="nav-toggle-label"
-           aria-label="Toggle navigation"
-           aria-controls="primary-navigation">
+           aria-label="Toggle navigation">
         <span></span>
         <span></span>
         <span></span>
@@ -67,6 +66,11 @@
      PAGE CONTENT
 ================================================== -->
 {% block content %}{% endblock %}
+
+<!-- ==================================================
+     JAVASCRIPT (OBLIGATORIO)
+================================================== -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 </body>
 </html>
