@@ -1,36 +1,52 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{ category|capitalize }} Wildlife Photo | Licensing & Fine Art Prints | Wildlight Studio
+{{ category|capitalize }} Wildlife Photo | Licensing & Fine Art Prints | Wildlight Studio Costa Rica
+{% endblock %}
+
+{% block og_title %}
+{{ category|capitalize }} Wildlife Photo | Wildlight Studio Costa Rica
 {% endblock %}
 
 {% block content %}
+
+<!-- ==================================================
+     PAGE HEADER / BREADCRUMB
+================================================== -->
+<header class="page-header">
+    <div class="container">
+
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/?lang={{ lang }}">Home</a>
+            <span aria-hidden="true">›</span>
+
+            <a href="/galleries?lang={{ lang }}">Galleries</a>
+            <span aria-hidden="true">›</span>
+
+            <a href="/gallery/{{ category }}?lang={{ lang }}">
+                {{ category|capitalize }}
+            </a>
+            <span aria-hidden="true">›</span>
+
+            <span class="current" aria-current="page">
+                {{ photo_id
+                    | replace('.jpg','')
+                    | replace('.jpeg','')
+                    | replace('.webp','')
+                    | replace('-', ' ')
+                    | capitalize
+                }}
+            </span>
+        </nav>
+
+    </div>
+</header>
+
+<!-- ==================================================
+     PHOTO CONTENT
+================================================== -->
+<main>
 <section class="photo-page" itemscope itemtype="https://schema.org/ImageObject">
-
-    <!-- =========================
-         BREADCRUMB
-    ========================= -->
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/?lang={{ lang }}">Home</a>
-        <span aria-hidden="true">›</span>
-
-        <a href="/galleries?lang={{ lang }}">Galleries</a>
-        <span aria-hidden="true">›</span>
-
-        <a href="/gallery/{{ category }}?lang={{ lang }}">
-            {{ category|capitalize }}
-        </a>
-        <span aria-hidden="true">›</span>
-
-        <span class="current" aria-current="page">
-            {{ photo_id
-                | replace('.jpg','')
-                | replace('.jpeg','')
-                | replace('-', ' ')
-                | capitalize
-            }}
-        </span>
-    </nav>
 
     <!-- =========================
          MAIN IMAGE
@@ -38,16 +54,19 @@
     {% if photo_id %}
     <figure class="photo-wrapper">
         <img
-            src="/static/images/{{ category }}/thumbnails/{{ photo_id }}"
-            alt="{{ category|capitalize }} wildlife photograph by Wildlight Studio"
-            loading="lazy"
+            src="{{ url_for(
+                'static',
+                filename='assets/img/' ~ category ~ '/thumbnails/' ~ photo_id
+            ) }}"
+            alt="{{ category|capitalize }} wildlife photograph by Wildlight Studio Costa Rica"
+            loading="eager"
             width="1200"
             height="800"
             itemprop="contentUrl">
 
         <meta itemprop="name"
               content="{{ category|capitalize }} Wildlife Photograph">
-        <meta itemprop="author" content="Wildlight Studio">
+        <meta itemprop="author" content="Wildlight Studio Costa Rica">
         <meta itemprop="license"
               content="https://wildlightstudiocr.com/licensing">
     </figure>
@@ -66,6 +85,7 @@
             {{ photo_id
                 | replace('.jpg','')
                 | replace('.jpeg','')
+                | replace('.webp','')
                 | replace('-', ' ')
                 | capitalize
             }}
@@ -77,14 +97,12 @@
         </p>
 
         <p class="photo-meta">
-            <strong>File:</strong>
-            {{ photo_id }} ·
-            <strong>Category:</strong>
-            {{ category|capitalize }}
+            <strong>File:</strong> {{ photo_id }} ·
+            <strong>Category:</strong> {{ category|capitalize }}
         </p>
 
         <p class="photo-caption" itemprop="description">
-            Professional wildlife photograph by Wildlight Studio.
+            Professional wildlife photograph by Wildlight Studio Costa Rica.
             Suitable for editorial, commercial, conservation, and educational use.
         </p>
 
@@ -101,7 +119,7 @@
         </p>
 
         <p class="photo-note">
-            © Wildlight Studio — All rights reserved.<br>
+            © Wildlight Studio Costa Rica — All rights reserved.<br>
             Unauthorized use is prohibited.
         </p>
 
@@ -120,7 +138,10 @@
                 {% for rp in related_photos %}
                     <a href="/photo/{{ category }}/{{ rp }}?lang={{ lang }}">
                         <img
-                            src="/static/images/{{ category }}/thumbnails/{{ rp }}"
+                            src="{{ url_for(
+                                'static',
+                                filename='assets/img/' ~ category ~ '/thumbnails/' ~ rp
+                            ) }}"
                             alt="Related {{ category|capitalize }} wildlife photo"
                             loading="lazy"
                             width="400"
@@ -132,10 +153,11 @@
     {% endif %}
 
 </section>
+</main>
 
-<!-- =========================
+<!-- ==================================================
      STRUCTURED DATA (JSON-LD)
-========================= -->
+================================================== -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -143,13 +165,13 @@
   "name": "{{ category|capitalize }} wildlife photograph",
   "author": {
     "@type": "Organization",
-    "name": "Wildlight Studio"
+    "name": "Wildlight Studio Costa Rica"
   },
-  "contentUrl": "https://wildlightstudiocr.com/static/images/{{ category }}/thumbnails/{{ photo_id }}",
+  "contentUrl": "https://wildlightstudiocr.com{{ url_for('static', filename='assets/img/' ~ category ~ '/thumbnails/' ~ photo_id) }}",
   "url": "https://wildlightstudiocr.com/photo/{{ category }}/{{ photo_id }}",
   "license": "https://wildlightstudiocr.com/licensing",
   "acquireLicensePage": "https://wildlightstudiocr.com/contact?photo={{ category }}-{{ photo_id }}",
-  "copyrightNotice": "© Wildlight Studio"
+  "copyrightNotice": "© Wildlight Studio Costa Rica"
 }
 </script>
 
