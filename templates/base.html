@@ -6,21 +6,31 @@
 
     <title>{% block title %}Wildlight Studio Costa Rica{% endblock %}</title>
 
+    <!-- CSS -->
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css', v=3) }}">
+          href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
 
 <nav class="navbar">
+
+    <!-- LOGO -->
     <div class="brand">
-        <a href="/?lang={{ lang }}">
-            <img src="{{ url_for('static', filename='assets/img/logo/wildlight-studio-logo-black.webp') }}"
-                 alt="Wildlight Studio"
-                 height="48">
+        <a href="/?lang={{ lang }}" aria-label="Wildlight Studio Costa Rica">
+            <img
+                src="{{ url_for('static', filename='assets/img/logo/wildlight-studio-logo-black.webp') }}"
+                alt="Wildlight Studio Costa Rica">
         </a>
     </div>
 
+    <!-- LANGUAGE -->
+    <div class="language-switch">
+        <a href="{{ request.path }}?lang=en">EN</a> |
+        <a href="{{ request.path }}?lang=es">ES</a>
+    </div>
+
+    <!-- NAVIGATION -->
     <div class="nav-links">
         <a href="/?lang={{ lang }}">Home</a>
         <a href="/galleries?lang={{ lang }}">Galleries</a>
@@ -29,10 +39,6 @@
         <a href="/contact?lang={{ lang }}">Contact</a>
     </div>
 
-    <div class="language-switch">
-        <a href="{{ request.path }}?lang=en">EN</a> |
-        <a href="{{ request.path }}?lang=es">ES</a>
-    </div>
 </nav>
 
 {% block content %}{% endblock %}
