@@ -1,46 +1,65 @@
 {% extends "base.html" %}
 
 {% block title %}
-Galleries | Wildlight Studio
+Galleries | Wildlight Studio Costa Rica
+{% endblock %}
+
+{% block og_title %}
+Galleries | Wildlight Studio Costa Rica
 {% endblock %}
 
 {% block content %}
-<section class="galleries-page">
 
-    <header class="page-header">
+<!-- ==================================================
+     PAGE HEADER (NO HERO)
+================================================== -->
+<header class="page-header">
+    <div class="container">
         <h1>Photo Galleries</h1>
         <p class="page-intro">
             Explore curated wildlife and nature photography collections by category.
         </p>
-    </header>
-
-    <div class="photo-grid galleries-grid">
-
-        {% for category in categories %}
-            {% if preview_images.get(category) %}
-                <a
-                    href="/gallery/{{ category }}?lang={{ lang }}"
-                    class="gallery-card"
-                    aria-label="{{ category|capitalize }} photo gallery">
-
-                    <figure class="gallery-preview">
-                        <img
-                            src="/static/images/{{ category }}/thumbnails/{{ preview_images[category] }}"
-                            alt="{{ category|capitalize }} wildlife photography gallery by Wildlight Studio"
-                            loading="lazy"
-                            width="400"
-                            height="300">
-
-                        <figcaption class="gallery-title">
-                            <h2>{{ category|capitalize }}</h2>
-                        </figcaption>
-                    </figure>
-
-                </a>
-            {% endif %}
-        {% endfor %}
-
     </div>
+</header>
 
-</section>
+<!-- ==================================================
+     GALLERIES GRID
+================================================== -->
+<main>
+    <section class="galleries-page">
+
+        <div class="gallery-grid">
+
+            {% for category in categories %}
+                {% if preview_images.get(category) %}
+                    <a
+                        href="/gallery/{{ category }}?lang={{ lang }}"
+                        class="gallery-card"
+                        aria-label="{{ category|capitalize }} photo gallery">
+
+                        <figure class="gallery-preview">
+                            <img
+                                src="{{ url_for(
+                                    'static',
+                                    filename='assets/img/' ~ category ~ '/thumbnails/' ~ preview_images[category]
+                                ) }}"
+                                alt="{{ category|capitalize }} wildlife photography gallery by Wildlight Studio Costa Rica"
+                                loading="lazy"
+                                width="400"
+                                height="300">
+
+                            <figcaption class="gallery-title">
+                                <h2>{{ category|capitalize }}</h2>
+                            </figcaption>
+                        </figure>
+
+                    </a>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+
+    </section>
+</main>
+
 {% endblock %}
