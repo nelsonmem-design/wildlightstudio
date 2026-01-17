@@ -10,33 +10,26 @@ Wildlight Studio Costa Rica | Wildlife & Nature Photography
      HERO / HOME HEADER (CSS SLIDESHOW)
 ================================================== -->
 <section class="hero">
+    <div class="slide s1"></div>
+    <div class="slide s2"></div>
+    <div class="slide s3"></div>
+    <div class="slide s4"></div>
 
-    <!-- SLIDES (NO JS) -->
-    <span class="slide s1"></span>
-    <span class="slide s2"></span>
-    <span class="slide s3"></span>
-    <span class="slide s4"></span>
-
-    <!-- CONTENT -->
     <div class="hero-content">
         <h1>{{ texts.home_title }}</h1>
-
-        <p class="hero-subtitle">
-            {{ texts.home_subtitle }}
-        </p>
+        <p class="hero-subtitle">{{ texts.home_subtitle }}</p>
 
         <div class="hero-actions">
             <a href="/galleries?lang={{ lang }}" class="cta">
                 {{ texts.cta_galleries }}
             </a>
-
             <a href="/contact?lang={{ lang }}" class="cta secondary">
-                {{ texts.send_request | default('Contact') }}
+                Contact
             </a>
         </div>
     </div>
-
 </section>
+
 
 <!-- ==================================================
      HOME INTRO

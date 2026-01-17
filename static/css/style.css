@@ -36,9 +36,9 @@ body {
 }
 
 img {
+    display: block;
     max-width: 100%;
     height: auto;
-    display: block;
 }
 
 a {
@@ -54,7 +54,7 @@ h1, h2, h3 {
     margin: 0 0 12px;
 }
 
-h1 { font-size: 2.6rem; }
+h1 { font-size: 2.8rem; }
 h2 { font-size: 1.6rem; }
 
 p {
@@ -63,7 +63,7 @@ p {
 }
 
 /* ==================================================
-   NAVBAR
+   NAVBAR — FINAL
 ================================================== */
 .navbar {
     position: sticky;
@@ -84,11 +84,10 @@ p {
     height: var(--logo-desktop);
 }
 
-/* Nav links */
 .nav-links {
     display: flex;
-    align-items: center;
     gap: 22px;
+    align-items: center;
 }
 
 .nav-links a {
@@ -101,19 +100,13 @@ p {
     opacity: 1;
 }
 
-/* Language */
 .language-switch {
     font-size: 0.85rem;
     opacity: 0.8;
-    white-space: nowrap;
-}
-
-.language-switch a:hover {
-    color: var(--accent);
 }
 
 /* ==================================================
-   HAMBURGER MENU
+   HAMBURGER (CSS ONLY)
 ================================================== */
 .nav-toggle {
     display: none;
@@ -142,12 +135,8 @@ main {
 }
 
 /* ==================================================
-   HERO
+   HERO — SLIDESHOW CSS ONLY (FINAL)
 ================================================== */
-/* ==================================================
-   HERO — CSS ONLY SLIDESHOW (PRO)
-================================================== */
-
 .hero {
     position: relative;
     min-height: 100vh;
@@ -162,10 +151,7 @@ main {
     isolation: isolate;
 }
 
-/* SLIDES */
-.hero::before,
-.hero::after {
-    content: "";
+.hero .slide {
     position: absolute;
     inset: 0;
 
@@ -173,54 +159,36 @@ main {
     background-position: center;
     background-repeat: no-repeat;
 
-    animation: heroFade 16s infinite;
+    opacity: 0;
+    animation: heroFade 24s infinite;
     z-index: -2;
 }
 
-/* Slide 1 */
+.hero .s1 { background-image: url("/static/assets/img/home/chocuaco.jpg"); animation-delay: 0s; }
+.hero .s2 { background-image: url("/static/assets/img/home/cuco-isla-coco.jpg"); animation-delay: 6s; }
+.hero .s3 { background-image: url("/static/assets/img/home/espiritu-santo.jpg"); animation-delay: 12s; }
+.hero .s4 { background-image: url("/static/assets/img/home/patas-amarillas.jpg"); animation-delay: 18s; }
+
 .hero::before {
-    background-image: url("/static/assets/img/home/chocuaco.jpg");
-    animation-delay: 0s;
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(11, 15, 20, 0.55);
+    z-index: -1;
 }
 
-/* Slide 2 */
-.hero::after {
-    background-image: url("/static/assets/img/home/cuco-isla-coco.jpg");
-    animation-delay: 8s;
-}
-
-/* Overlay */
-.hero::marker {
-    display: none;
-}
-
-.hero::selection {
-    background: transparent;
-}
-
-/* Dark overlay */
-.hero::after {
-    box-shadow: inset 0 0 0 9999px rgba(11, 15, 20, 0.55);
-}
-
-/* Animation */
 @keyframes heroFade {
     0%   { opacity: 0; }
-    10%  { opacity: 1; }
-    45%  { opacity: 1; }
-    55%  { opacity: 0; }
+    8%   { opacity: 1; }
+    25%  { opacity: 1; }
+    33%  { opacity: 0; }
     100% { opacity: 0; }
 }
 
-/* HERO CONTENT */
 .hero-content {
     position: relative;
     z-index: 1;
     max-width: 900px;
-}
-
-.hero h1 {
-    font-size: 3.2rem;
 }
 
 .hero-subtitle {
@@ -229,49 +197,63 @@ main {
     font-size: 1.15rem;
 }
 
-
 /* ==================================================
-   BUTTONS
+   BUTTONS — FINAL CONSISTENTE
 ================================================== */
 .cta {
-    display: inline-block;
-    padding: 14px 24px;
-    background: var(--accent);
-    color: var(--bg-main);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 48px;
+    padding: 0 26px;
+
+    font-size: 0.95rem;
     font-weight: 600;
+
+    background-color: var(--accent);
+    color: var(--bg-main);
+
     border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(34, 197, 94, 0.25);
 }
 
 .cta.secondary {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.3);
+    background-color: transparent;
+    color: var(--text-main);
+    border-color: rgba(255,255,255,0.35);
+}
+
+.cta.secondary:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: none;
 }
 
 /* ==================================================
-   PAGE CONTENT (CONTACT / ABOUT / LICENSING)
+   CONTACT / PAGES
 ================================================== */
-.page-content,
-.contact-page {
+.contact-page,
+.page-content {
     max-width: 720px;
     margin: 0 auto;
     padding: 80px 20px 40px;
 }
 
-.page-content h1,
-.contact-page h1 {
-    text-align: center;
-    margin-bottom: 24px;
-}
-
-.page-content p,
-.contact-page p {
-    margin-bottom: 18px;
-    font-size: 1rem;
-}
-
-/* ==================================================
-   CONTACT FORM
-================================================== */
 .contact-form {
     background: var(--bg-secondary);
     padding: 32px;
@@ -280,10 +262,6 @@ main {
     display: flex;
     flex-direction: column;
     gap: 16px;
-}
-
-.contact-form label {
-    font-size: 0.9rem;
 }
 
 .contact-form input,
@@ -296,74 +274,14 @@ main {
     color: var(--text-main);
 }
 
-.contact-form textarea {
-    min-height: 140px;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-}
-
-/* ==================================================
-   LICENSING PAGE
-================================================== */
-.licensing-page {
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-.licensing-hero {
-    text-align: center;
-    margin-bottom: 80px;
-}
-
-.licensing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 28px;
-}
-
-.license-card {
-    background: var(--bg-secondary);
-    padding: 32px;
-    border-radius: var(--radius-lg);
-
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.license-card.featured {
-    outline: 2px solid var(--accent);
-}
-
-.license-card ul {
-    padding-left: 18px;
-}
-
-.license-card li {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-}
-
 /* ==================================================
    GRIDS
 ================================================== */
-.photo-grid,
-.gallery-grid {
+.gallery-grid,
+.photo-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
-}
-
-.photo-grid img,
-.gallery-card img {
-    height: 260px;
-    object-fit: cover;
-    border-radius: var(--radius-md);
-    background: var(--bg-secondary);
 }
 
 /* ==================================================
@@ -398,7 +316,6 @@ main {
     }
 
     main,
-    .page-content,
     .contact-page {
         padding: 60px 16px 40px;
     }
