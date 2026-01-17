@@ -63,7 +63,7 @@ p {
 }
 
 /* ==================================================
-   NAVBAR — FINAL
+   NAVBAR
 ================================================== */
 .navbar {
     position: sticky;
@@ -86,8 +86,8 @@ p {
 
 .nav-links {
     display: flex;
-    gap: 22px;
     align-items: center;
+    gap: 22px;
 }
 
 .nav-links a {
@@ -151,6 +151,7 @@ main {
     isolation: isolate;
 }
 
+/* Slides */
 .hero .slide {
     position: absolute;
     inset: 0;
@@ -164,11 +165,13 @@ main {
     z-index: -2;
 }
 
+/* Images */
 .hero .s1 { background-image: url("/static/assets/img/home/chocuaco.jpg"); animation-delay: 0s; }
 .hero .s2 { background-image: url("/static/assets/img/home/cuco-isla-coco.jpg"); animation-delay: 6s; }
 .hero .s3 { background-image: url("/static/assets/img/home/espiritu-santo.jpg"); animation-delay: 12s; }
 .hero .s4 { background-image: url("/static/assets/img/home/patas-amarillas.jpg"); animation-delay: 18s; }
 
+/* Overlay */
 .hero::before {
     content: "";
     position: absolute;
@@ -177,6 +180,7 @@ main {
     z-index: -1;
 }
 
+/* Animation */
 @keyframes heroFade {
     0%   { opacity: 0; }
     8%   { opacity: 1; }
@@ -185,6 +189,7 @@ main {
     100% { opacity: 0; }
 }
 
+/* Content */
 .hero-content {
     position: relative;
     z-index: 1;
@@ -198,7 +203,7 @@ main {
 }
 
 /* ==================================================
-   BUTTONS — FINAL CONSISTENTE
+   BUTTONS — UNIFICADOS (AMBOS VERDES)
 ================================================== */
 .cta {
     display: inline-flex;
@@ -222,9 +227,7 @@ main {
     transition:
         transform 0.2s ease,
         box-shadow 0.2s ease,
-        background-color 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
+        background-color 0.2s ease;
 }
 
 .cta:hover {
@@ -232,23 +235,11 @@ main {
     box-shadow: 0 6px 18px rgba(34, 197, 94, 0.25);
 }
 
-.cta.secondary {
-    background-color: transparent;
-    color: var(--text-main);
-    border-color: rgba(255,255,255,0.35);
-}
-
-.cta.secondary:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-    box-shadow: none;
-}
-
 /* ==================================================
-   CONTACT / PAGES
+   PAGES / CONTACT
 ================================================== */
-.contact-page,
-.page-content {
+.page-content,
+.contact-page {
     max-width: 720px;
     margin: 0 auto;
     padding: 80px 20px 40px;
@@ -319,13 +310,4 @@ main {
     .contact-page {
         padding: 60px 16px 40px;
     }
-}
-.hero .cta.secondary {
-    color: var(--bg-main);
-    border-color: rgba(34, 197, 94, 0.6);
-}
-
-.hero .cta.secondary:hover {
-    background-color: rgba(34, 197, 94, 0.15);
-    color: var(--bg-main);
 }
