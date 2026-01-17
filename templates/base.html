@@ -27,22 +27,36 @@
         </a>
     </div>
 
-    <!-- LANGUAGE SWITCH -->
-    <div class="language-switch">
-        <a href="{{ request.path }}?lang=en">EN</a> |
-        <a href="{{ request.path }}?lang=es">ES</a>
-    </div>
+    <!-- HAMBURGER -->
+    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+    <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+    </label>
 
-    <!-- MAIN NAVIGATION -->
+    <!-- NAV LINKS -->
     <div class="nav-links">
         <a href="/?lang={{ lang }}">Home</a>
         <a href="/galleries?lang={{ lang }}">Galleries</a>
         <a href="/licensing?lang={{ lang }}">Licensing</a>
         <a href="/about?lang={{ lang }}">About</a>
         <a href="/contact?lang={{ lang }}">Contact</a>
+
+        <div class="language-switch mobile-only">
+            <a href="{{ request.path }}?lang=en">EN</a> |
+            <a href="{{ request.path }}?lang=es">ES</a>
+        </div>
+    </div>
+
+    <!-- DESKTOP LANGUAGE -->
+    <div class="language-switch desktop-only">
+        <a href="{{ request.path }}?lang=en">EN</a> |
+        <a href="{{ request.path }}?lang=es">ES</a>
     </div>
 
 </nav>
+
 
 <!-- ==================================================
      PAGE CONTENT

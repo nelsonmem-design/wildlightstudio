@@ -376,3 +376,77 @@ main {
 .language-switch a:hover {
     color: var(--accent);
 }
+/* ==================================================
+   HAMBURGER MENU
+================================================== */
+
+/* Toggle input (hidden) */
+.nav-toggle {
+    display: none;
+}
+
+/* Hamburger icon */
+.nav-toggle-label {
+    display: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.nav-toggle-label span {
+    width: 24px;
+    height: 2px;
+    background-color: var(--text-main);
+    display: block;
+}
+
+/* Desktop */
+@media (min-width: 900px) {
+
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+    }
+
+    .desktop-only {
+        display: block;
+    }
+
+    .mobile-only {
+        display: none;
+    }
+}
+
+/* Mobile */
+@media (max-width: 899px) {
+
+    .nav-toggle-label {
+        display: flex;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+
+        background-color: rgba(17, 24, 39, 0.98);
+        backdrop-filter: blur(10px);
+
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+
+        padding: 24px 0;
+        display: none;
+    }
+
+    .nav-toggle:checked ~ .nav-links {
+        display: flex;
+    }
+}
