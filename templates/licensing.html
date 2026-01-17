@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{ texts.licensing_title }} | Wildlife Photography Licensing | Wildlight Studio
+{{ texts.licensing_title }} | Wildlife Photography Licensing | Wildlight Studio Costa Rica
 {% endblock %}
 
 {% block content %}
-<section class="licensing-page">
+<main class="page-content licensing-page">
 
-    <!-- HERO -->
+    <!-- ==================================================
+         HERO
+    ================================================== -->
     <header class="licensing-hero">
         <h1>{{ texts.licensing_title }}</h1>
         <p class="licensing-intro">
@@ -15,83 +17,93 @@
         </p>
     </header>
 
-    <!-- LICENSE TYPES -->
+    <!-- ==================================================
+         LICENSING TYPES
+    ================================================== -->
     <section class="licensing-types">
-        <h2>Licensing options</h2>
+        <h2>Licensing Options</h2>
 
         <div class="licensing-grid">
 
-            <!-- Editorial -->
-            <div class="license-card">
+            <article class="license-card">
                 <h3>Editorial</h3>
-                <p>Magazines, blogs, news, educational content</p>
+                <p class="license-desc">
+                    Magazines, blogs, news outlets, and educational content.
+                </p>
                 <ul>
-                    <li>✔ Non-commercial use</li>
-                    <li>✔ Credit required</li>
-                    <li>✔ Single publication</li>
+                    <li>Non-commercial use</li>
+                    <li>Credit required</li>
+                    <li>Single publication</li>
                 </ul>
                 <a href="/contact?license=editorial&lang={{ lang }}" class="cta">
                     Request Editorial License
                 </a>
-            </div>
+            </article>
 
-            <!-- Commercial -->
-            <div class="license-card featured">
+            <article class="license-card featured">
                 <h3>Commercial</h3>
-                <p>Websites, branding, advertising, marketing</p>
+                <p class="license-desc">
+                    Websites, branding, advertising, and marketing campaigns.
+                </p>
                 <ul>
-                    <li>✔ Commercial usage</li>
-                    <li>✔ Web & print</li>
-                    <li>✔ Pricing based on reach</li>
+                    <li>Commercial usage</li>
+                    <li>Web & print</li>
+                    <li>Pricing based on reach</li>
                 </ul>
                 <a href="/contact?license=commercial&lang={{ lang }}" class="cta">
                     Request Commercial License
                 </a>
-            </div>
+            </article>
 
-            <!-- Conservation -->
-            <div class="license-card">
+            <article class="license-card">
                 <h3>Conservation & NGOs</h3>
-                <p>Environmental projects and education</p>
+                <p class="license-desc">
+                    Environmental projects, research, and education.
+                </p>
                 <ul>
-                    <li>✔ Special conditions</li>
-                    <li>✔ Non-profit use</li>
-                    <li>✔ Awareness campaigns</li>
+                    <li>Special conditions</li>
+                    <li>Non-profit use</li>
+                    <li>Awareness campaigns</li>
                 </ul>
                 <a href="/contact?license=conservation&lang={{ lang }}" class="cta">
                     Request Conservation License
                 </a>
-            </div>
+            </article>
 
-            <!-- Fine Art -->
-            <div class="license-card">
+            <article class="license-card">
                 <h3>Fine Art Prints</h3>
-                <p>Collectors, homes, galleries</p>
+                <p class="license-desc">
+                    Collectors, homes, offices, and galleries.
+                </p>
                 <ul>
-                    <li>✔ Museum-quality prints</li>
-                    <li>✔ Limited editions</li>
-                    <li>✔ Signed on request</li>
+                    <li>Museum-quality prints</li>
+                    <li>Limited editions</li>
+                    <li>Signed on request</li>
                 </ul>
                 <a href="/contact?license=print&lang={{ lang }}" class="cta">
                     Buy Fine Art Print
                 </a>
-            </div>
+            </article>
 
         </div>
     </section>
 
-    <!-- PROCESS -->
+    <!-- ==================================================
+         PROCESS
+    ================================================== -->
     <section class="licensing-process">
-        <h2>How it works</h2>
+        <h2>How It Works</h2>
         <ol>
-            <li>You choose the image</li>
-            <li>You select the type of license</li>
-            <li>I confirm pricing and terms</li>
+            <li>Select the image you are interested in</li>
+            <li>Choose the appropriate license type</li>
+            <li>I confirm pricing and usage terms</li>
             <li>You receive the licensed image</li>
         </ol>
     </section>
 
-    <!-- CTA FINAL -->
+    <!-- ==================================================
+         FINAL CTA
+    ================================================== -->
     <section class="licensing-cta">
         <p>{{ texts.licensing_p3 }}</p>
         <a href="/contact?lang={{ lang }}" class="cta">
@@ -99,5 +111,5 @@
         </a>
     </section>
 
-</section>
+</main>
 {% endblock %}
