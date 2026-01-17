@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}{{ texts.contact_title }} | Wildlight Studio{% endblock %}
+{% block title %}
+{{ texts.contact_title }} | Wildlight Studio Costa Rica
+{% endblock %}
 
 {% block content %}
+<main>
+
 <section class="contact-page">
 
     <h1>{{ texts.contact_title }}</h1>
@@ -27,14 +31,15 @@
             </p>
         {% endif %}
 
-        <label>Name</label>
-        <input type="text" name="name" required>
+        <label for="name">Name</label>
+        <input id="name" type="text" name="name" required>
 
-        <label>Email</label>
-        <input type="email" name="email" required>
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" required>
 
-        <label>Message</label>
+        <label for="message">Message</label>
         <textarea
+            id="message"
             name="message"
             rows="5"
             required
@@ -48,4 +53,6 @@
     </form>
 
 </section>
+
+</main>
 {% endblock %}
