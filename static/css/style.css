@@ -311,3 +311,18 @@ main {
         padding: 60px 16px 40px;
     }
 }
+/* ==================================================
+   GALLERIES — FIX UNIFORM IMAGE SIZE
+================================================== */
+
+.gallery-card {
+    display: block;
+}
+
+.gallery-card img {
+    width: 100%;
+    height: 260px;              /* ← ALTURA FIJA */
+    object-fit: cover;          /* ← CLAVE */
+    border-radius: var(--radius-md);
+    background-color: var(--bg-secondary);
+}

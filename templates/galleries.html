@@ -4,14 +4,10 @@
 Galleries | Wildlight Studio Costa Rica
 {% endblock %}
 
-{% block og_title %}
-Galleries | Wildlight Studio Costa Rica
-{% endblock %}
-
 {% block content %}
 
 <!-- ==================================================
-     PAGE HEADER (NO HERO)
+     PAGE HEADER
 ================================================== -->
 <header class="page-header">
     <div class="container">
@@ -26,7 +22,7 @@ Galleries | Wildlight Studio Costa Rica
      GALLERIES GRID
 ================================================== -->
 <main>
-    <section class="galleries-page">
+    <section class="galleries-page" aria-label="Photo galleries">
 
         <div class="gallery-grid">
 
@@ -35,9 +31,10 @@ Galleries | Wildlight Studio Costa Rica
                     <a
                         href="/gallery/{{ category }}?lang={{ lang }}"
                         class="gallery-card"
-                        aria-label="{{ category|capitalize }} photo gallery">
+                        aria-label="View {{ category|capitalize }} gallery">
 
                         <figure class="gallery-preview">
+
                             <img
                                 src="{{ url_for(
                                     'static',
@@ -48,9 +45,11 @@ Galleries | Wildlight Studio Costa Rica
                                 width="400"
                                 height="300">
 
+                            <!-- Overlay title -->
                             <figcaption class="gallery-title">
                                 <h2>{{ category|capitalize }}</h2>
                             </figcaption>
+
                         </figure>
 
                     </a>
