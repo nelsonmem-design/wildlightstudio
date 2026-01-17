@@ -4,23 +4,25 @@
 Wildlight Studio Costa Rica | Wildlife & Nature Photography
 {% endblock %}
 
-{% block og_title %}
-Wildlight Studio Costa Rica | Wildlife & Nature Photography
-{% endblock %}
-
 {% block content %}
 
 <!-- ==================================================
-     HERO / HOME HEADER
+     HERO / HOME HEADER (CSS SLIDESHOW)
 ================================================== -->
-<section class="hero" id="hero" role="banner">
+<section class="hero">
+
+    <!-- SLIDES (NO JS) -->
+    <span class="slide s1"></span>
+    <span class="slide s2"></span>
+    <span class="slide s3"></span>
+    <span class="slide s4"></span>
+
+    <!-- CONTENT -->
     <div class="hero-content">
         <h1>{{ texts.home_title }}</h1>
 
         <p class="hero-subtitle">
             {{ texts.home_subtitle }}
-            specializing in birds, wildlife, and natural habitats.
-            Images available for licensing and fine art prints.
         </p>
 
         <div class="hero-actions">
@@ -29,10 +31,11 @@ Wildlight Studio Costa Rica | Wildlife & Nature Photography
             </a>
 
             <a href="/contact?lang={{ lang }}" class="cta secondary">
-                {{ texts.cta_license | default('License an Image') }}
+                {{ texts.send_request | default('Contact') }}
             </a>
         </div>
     </div>
+
 </section>
 
 <!-- ==================================================
@@ -40,18 +43,16 @@ Wildlight Studio Costa Rica | Wildlife & Nature Photography
 ================================================== -->
 <main>
     <section class="home-intro">
-        <div class="container">
-            <p>
-                <strong>Wildlight Studio</strong> is a wildlife photography project
-                based in Costa Rica, focused on documenting birds and nature with
-                respect, patience, and natural light.
-            </p>
+        <p>
+            <strong>Wildlight Studio</strong> is a wildlife photography project
+            based in Costa Rica, focused on documenting birds and nature with
+            respect, patience, and natural light.
+        </p>
 
-            <p>
-                Photographs are available for editorial, commercial, conservation,
-                and educational use, as well as fine art prints.
-            </p>
-        </div>
+        <p>
+            Photographs are available for editorial, commercial, conservation,
+            and educational use, as well as fine art prints.
+        </p>
     </section>
 </main>
 

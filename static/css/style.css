@@ -144,40 +144,91 @@ main {
 /* ==================================================
    HERO
 ================================================== */
+/* ==================================================
+   HERO — CSS ONLY SLIDESHOW (PRO)
+================================================== */
+
 .hero {
+    position: relative;
     min-height: 100vh;
+    overflow: hidden;
+
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
 
     padding: 120px 20px;
-    position: relative;
+    isolation: isolate;
 }
 
-.hero::before {
+/* SLIDES */
+.hero::before,
+.hero::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        rgba(11, 15, 20, 0.6),
-        rgba(11, 15, 20, 0.85)
-    );
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    animation: heroFade 16s infinite;
+    z-index: -2;
 }
 
-.hero > * {
+/* Slide 1 */
+.hero::before {
+    background-image: url("/static/assets/img/home/chocuaco.jpg");
+    animation-delay: 0s;
+}
+
+/* Slide 2 */
+.hero::after {
+    background-image: url("/static/assets/img/home/cuco-isla-coco.jpg");
+    animation-delay: 8s;
+}
+
+/* Overlay */
+.hero::marker {
+    display: none;
+}
+
+.hero::selection {
+    background: transparent;
+}
+
+/* Dark overlay */
+.hero::after {
+    box-shadow: inset 0 0 0 9999px rgba(11, 15, 20, 0.55);
+}
+
+/* Animation */
+@keyframes heroFade {
+    0%   { opacity: 0; }
+    10%  { opacity: 1; }
+    45%  { opacity: 1; }
+    55%  { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* HERO CONTENT */
+.hero-content {
     position: relative;
     z-index: 1;
+    max-width: 900px;
 }
 
 .hero h1 {
-    font-size: 3rem;
+    font-size: 3.2rem;
 }
 
 .hero-subtitle {
     max-width: 720px;
     margin: 20px auto 40px;
+    font-size: 1.15rem;
 }
+
 
 /* ==================================================
    BUTTONS
