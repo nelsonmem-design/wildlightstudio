@@ -401,3 +401,33 @@ section {
     visibility: visible;
     opacity: 1;
 }
+/* ==================================================
+   FIX DEFINITIVO DE VISIBILIDAD (PRODUCCIÓN)
+================================================== */
+
+/* Aísla el hero para que su overlay no tape el resto */
+.hero {
+    position: relative;
+    isolation: isolate;
+    z-index: 1;
+}
+
+/* Asegura que el contenido normal esté encima */
+main,
+.page-header,
+.gallery-page,
+.galleries-page,
+.home-intro {
+    position: relative;
+    z-index: 2;
+}
+
+/* Previene bloqueos invisibles */
+section {
+    display: block;
+}
+
+/* Seguridad */
+body {
+    overflow-x: hidden;
+}

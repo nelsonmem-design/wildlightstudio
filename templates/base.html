@@ -113,7 +113,7 @@
 <!-- ==================================================
      NAVBAR
 ================================================== -->
-<nav class="navbar">
+<nav class="navbar" role="navigation">
 
     <!-- BRAND / LOGO -->
     <div class="brand">
@@ -121,7 +121,7 @@
             <img
                 src="{{ url_for('static', filename='assets/img/logo/wildlight-studio-logo-black.webp') }}"
                 alt="Wildlight Studio Costa Rica"
-                height="60"
+                height="56"
                 loading="eager">
         </a>
     </div>
@@ -130,10 +130,4 @@
     <div class="nav-links">
         <a href="/?lang={{ lang }}">Home</a>
         <a href="/galleries?lang={{ lang }}">Galleries</a>
-        <a href="/licensing?lang={{ lang }}">Licensing</a>
-        <a href="/about?lang={{ lang }}">About</a>
-        <a href="/contact?lang={{ lang }}">Contact</a>
-    </div>
-
-    <!-- LANGUAGE SWITCH -->
-    <div class="language-switch">
+        <a href="/licensing?lang={{ lang }}">
