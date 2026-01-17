@@ -1,44 +1,63 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{ category|capitalize }} Wildlife Photography | Wildlight Studio
+{{ category|capitalize }} Wildlife Photography | Wildlight Studio Costa Rica
+{% endblock %}
+
+{% block og_title %}
+{{ category|capitalize }} Wildlife Photography | Wildlight Studio Costa Rica
 {% endblock %}
 
 {% block content %}
-<section class="gallery-page">
 
-    <header class="page-header">
+<!-- ==================================================
+     PAGE HEADER
+================================================== -->
+<header class="page-header">
+    <div class="container">
         <h1>{{ category|capitalize }}</h1>
         <p class="page-intro">
-            Explore {{ category|capitalize }} photography by Wildlight Studio.
+            Explore {{ category|capitalize }} wildlife photography by Wildlight Studio Costa Rica.
         </p>
-    </header>
+    </div>
+</header>
 
-    {% if photos and photos|length > 0 %}
-        <div class="photo-grid">
+<!-- ==================================================
+     GALLERY GRID
+================================================== -->
+<main>
+    <section class="gallery-page">
 
-            {% for photo in photos %}
-                <a
-                    href="/photo/{{ category }}/{{ photo }}?lang={{ lang }}"
-                    class="photo-item"
-                    aria-label="View {{ category|capitalize }} photo">
+        {% if photos and photos|length > 0 %}
+            <div class="photo-grid">
 
-                    <img
-                        src="/static/images/{{ category }}/thumbnails/{{ photo }}"
-                        alt="{{ category|capitalize }} wildlife photo by Wildlight Studio"
-                        loading="lazy"
-                        width="400"
-                        height="300">
+                {% for photo in photos %}
+                    <a
+                        href="/photo/{{ category }}/{{ photo }}?lang={{ lang }}"
+                        class="photo-item"
+                        aria-label="View {{ category|capitalize }} photo">
 
-                </a>
-            {% endfor %}8
+                        <img
+                            src="{{ url_for(
+                                'static',
+                                filename='assets/img/' ~ category ~ '/thumbnails/' ~ photo
+                            ) }}"
+                            alt="{{ category|capitalize }} wildlife photo by Wildlight Studio Costa Rica"
+                            loading="lazy"
+                            width="400"
+                            height="300">
 
-        </div>
-    {% else %}
-        <p class="empty-gallery">
-            No photos available in this gallery yet.
-        </p>
-    {% endif %}
+                    </a>
+                {% endfor %}
 
-</section>
+            </div>
+        {% else %}
+            <p class="empty-gallery">
+                No photos available in this gallery yet.
+            </p>
+        {% endif %}
+
+    </section>
+</main>
+
 {% endblock %}
