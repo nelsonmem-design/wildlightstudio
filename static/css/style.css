@@ -10,7 +10,7 @@
 
     --accent: #22c55e;
 
-    --logo-height-desktop: 56px;
+    --logo-height-desktop: 52px;
     --logo-height-mobile: 44px;
 
     --radius-lg: 18px;
@@ -74,25 +74,28 @@ p {
 }
 
 /* ==================================================
-   NAVBAR
+   NAVBAR — ESTABLE (GRID)
 ================================================== */
 .navbar {
     position: sticky;
     top: 0;
     z-index: 1000;
 
-    padding: 14px 24px;
-    background-color: rgba(17, 24, 39, 0.92);
+    background-color: rgba(17, 24, 39, 0.95);
     backdrop-filter: blur(10px);
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    row-gap: 8px;
+
+    padding: 14px 24px;
 }
 
+/* Logo */
 .brand {
-    flex-shrink: 0;
+    grid-column: 1 / 2;
+    grid-row: 1;
 }
 
 .brand img {
@@ -100,30 +103,43 @@ p {
     max-height: var(--logo-height-desktop);
 }
 
+/* Language switch */
+.language-switch {
+    grid-column: 2 / 3;
+    grid-row: 1;
+    align-self: center;
+
+    font-size: 0.85rem;
+    opacity: 0.8;
+    white-space: nowrap;
+}
+
+.language-switch a:hover {
+    color: var(--accent);
+}
+
 /* Navigation links */
 .nav-links {
+    grid-column: 1 / -1;
+    grid-row: 2;
+
     display: flex;
-    align-items: center;
+    justify-content: center;
     gap: 22px;
-    flex-wrap: nowrap; /* evita saltos feos */
+    flex-wrap: wrap;
+
+    padding-top: 6px;
 }
 
 .nav-links a {
     font-size: 0.95rem;
-    opacity: 0.9;
     white-space: nowrap;
+    opacity: 0.9;
 }
 
-.nav-links a:hover,
-.language-switch a:hover {
+.nav-links a:hover {
     color: var(--accent);
     opacity: 1;
-}
-
-.language-switch {
-    flex-shrink: 0;
-    font-size: 0.85rem;
-    opacity: 0.75;
 }
 
 /* ==================================================
@@ -314,11 +330,5 @@ main {
 
     main {
         padding: 40px 16px;
-    }
-
-    /* En móvil permitimos wrap (temporal) */
-    .nav-links {
-        flex-wrap: wrap;
-        justify-content: center;
     }
 }
