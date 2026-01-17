@@ -73,24 +73,6 @@ p {
     line-height: 1.7;
 }
 
-/* ==================================================
-   NAVBAR — ESTABLE (GRID)
-================================================== */
-.navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-
-    background-color: rgba(17, 24, 39, 0.95);
-    backdrop-filter: blur(10px);
-
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    row-gap: 8px;
-
-    padding: 14px 24px;
-}
 
 /* Logo */
 .brand {
