@@ -1,19 +1,25 @@
 /* ==================================================
-   VARIABLES / BRANDING
+   VARIABLES / BRANDING (GOLD THEME)
 ================================================== */
 :root {
+    /* Brand gold */
+    --accent: #d4af37;        /* dorado principal */
+    --accent-hover: #e6c86e;  /* dorado suave */
+    --accent-dark: #b8962e;   /* dorado profundo */
+
+    /* Backgrounds */
     --bg-main: #0b0f14;
     --bg-secondary: #111827;
 
+    /* Text */
     --text-main: #e5e7eb;
     --text-muted: #9ca3af;
 
-    --accent: #22c55e;
-
+    /* Logo sizes */
     --logo-desktop: 92px;
-    --logo-mobile:  76px;
+    --logo-mobile: 76px;
 
-
+    /* Radius */
     --radius-lg: 18px;
     --radius-md: 14px;
     --radius-sm: 10px;
@@ -88,7 +94,6 @@ p {
     image-rendering: -webkit-optimize-contrast;
 }
 
-
 /* NAV LINKS */
 .nav-links {
     display: flex;
@@ -98,7 +103,7 @@ p {
 
 .nav-links a {
     font-size: 0.95rem;
-    opacity: 0.9;
+    opacity: 0.85;
     transition: color 0.2s ease, opacity 0.2s ease;
 }
 
@@ -109,7 +114,7 @@ p {
 
 .language-switch {
     font-size: 0.85rem;
-    opacity: 0.8;
+    opacity: 0.75;
 }
 
 /* ==================================================
@@ -180,7 +185,10 @@ main {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(11, 15, 20, 0.55);
+    background: linear-gradient(
+        rgba(11, 15, 20, 0.65),
+        rgba(11, 15, 20, 0.55)
+    );
     z-index: -1;
 }
 
@@ -205,7 +213,7 @@ main {
 }
 
 /* ==================================================
-   BUTTONS
+   BUTTONS (GOLDEN CTA)
 ================================================== */
 .cta {
     display: inline-flex;
@@ -217,21 +225,29 @@ main {
 
     font-size: 0.95rem;
     font-weight: 600;
+    letter-spacing: 0.4px;
 
-    background-color: var(--accent);
-    color: var(--bg-main);
+    background: linear-gradient(
+        135deg,
+        var(--accent),
+        var(--accent-hover)
+    );
+
+    color: #0b0f14;
 
     border-radius: var(--radius-sm);
-    border: 1px solid transparent;
+    border: none;
 
     cursor: pointer;
 
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .cta:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(34, 197, 94, 0.25);
+    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.35);
 }
 
 /* ==================================================
@@ -277,16 +293,18 @@ main {
 /* ==================================================
    GALLERIES — UNIFORM IMAGE SIZE
 ================================================== */
-.gallery-card {
-    display: block;
-}
-
 .gallery-card img {
     width: 100%;
     height: 260px;
     object-fit: cover;
     border-radius: var(--radius-md);
     background-color: var(--bg-secondary);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-card img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
 }
 
 /* ==================================================
