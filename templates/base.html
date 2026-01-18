@@ -2,6 +2,8 @@
 <html lang="{{ lang | default('en') }}">
 <head>
     <meta charset="UTF-8">
+
+    <!-- RESPONSIVE CRÍTICO -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{% block title %}Wildlight Studio Costa Rica{% endblock %}</title>
@@ -23,7 +25,7 @@
           href="{{ url_for('static', filename='css/style.css') }}">
 
     <!-- ==================================================
-         ORGANIZATION SCHEMA (GOOGLE LOGO)
+         ORGANIZATION SCHEMA
     ================================================== -->
     <script type="application/ld+json">
     {
@@ -34,7 +36,6 @@
       "logo": "https://www.wildlightstudiocr.com/static/assets/img/logo/Photopea-wildlight-studio-logo-transparent-1.png"
     }
     </script>
-
 </head>
 
 <body>
@@ -44,54 +45,63 @@
 ================================================== -->
 <nav class="navbar" role="navigation">
 
-    <!-- LOGO -->
-    <div class="brand">
-        <a href="/?lang={{ lang }}" aria-label="Wildlight Studio Costa Rica">
-            <img
-                src="{{ url_for('static', filename='assets/img/logo/Photopea-wildlight-studio-logo-transparent-1.png') }}"
-                alt="Wildlight Studio Costa Rica">
-        </a>
-    </div>
+    <div class="nav-container">
 
-    <!-- TOGGLE -->
-    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+        <!-- LOGO -->
+        <div class="brand">
+            <a href="/?lang={{ lang }}" aria-label="Wildlight Studio Costa Rica">
+                <img
+                    src="{{ url_for('static', filename='assets/img/logo/Photopea-wildlight-studio-logo-transparent-1.png') }}"
+                    alt="Wildlight Studio Costa Rica"
+                    loading="lazy">
+            </a>
+        </div>
 
-    <!-- NAV LINKS -->
-    <div class="nav-links">
-        <a href="/?lang={{ lang }}">Home</a>
-        <a href="/galleries?lang={{ lang }}">Galleries</a>
-        <a href="/licensing?lang={{ lang }}">Licensing</a>
-        <a href="/about?lang={{ lang }}">About</a>
-        <a href="/contact?lang={{ lang }}">Contact</a>
+        <!-- TOGGLE -->
+        <input type="checkbox"
+               id="nav-toggle"
+               class="nav-toggle"
+               aria-label="Toggle navigation">
 
-        <!-- MOBILE LANGUAGE -->
-        <div class="language-switch mobile-only">
+        <!-- NAV LINKS -->
+        <div class="nav-links">
+            <a href="/?lang={{ lang }}">Home</a>
+            <a href="/galleries?lang={{ lang }}">Galleries</a>
+            <a href="/licensing?lang={{ lang }}">Licensing</a>
+            <a href="/about?lang={{ lang }}">About</a>
+            <a href="/contact?lang={{ lang }}">Contact</a>
+
+            <!-- MOBILE LANGUAGE -->
+            <div class="language-switch mobile-only">
+                <a href="{{ request.path }}?lang=en">EN</a> |
+                <a href="{{ request.path }}?lang=es">ES</a>
+            </div>
+        </div>
+
+        <!-- HAMBURGER -->
+        <label for="nav-toggle"
+               class="nav-toggle-label"
+               aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+
+        <!-- DESKTOP LANGUAGE -->
+        <div class="language-switch desktop-only">
             <a href="{{ request.path }}?lang=en">EN</a> |
             <a href="{{ request.path }}?lang=es">ES</a>
         </div>
+
     </div>
-
-    <!-- HAMBURGER ICON -->
-    <label for="nav-toggle"
-           class="nav-toggle-label"
-           aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
-    </label>
-
-    <!-- DESKTOP LANGUAGE -->
-    <div class="language-switch desktop-only">
-        <a href="{{ request.path }}?lang=en">EN</a> |
-        <a href="{{ request.path }}?lang=es">ES</a>
-    </div>
-
 </nav>
 
 <!-- ==================================================
-     PAGE CONTENT
+     MAIN CONTENT
 ================================================== -->
-{% block content %}{% endblock %}
+<main class="site-main">
+    {% block content %}{% endblock %}
+</main>
 
 <!-- ==================================================
      JAVASCRIPT
