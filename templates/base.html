@@ -6,7 +6,19 @@
 
     <title>{% block title %}Wildlight Studio Costa Rica{% endblock %}</title>
 
-    <!-- CSS -->
+    <!-- ==================================================
+         FAVICON
+    ================================================== -->
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="{{ url_for('static', filename='assets/img/logo/wildlight-studio-icon-32x32-1.png') }}">
+    <link rel="icon" type="image/png" sizes="64x64"
+          href="{{ url_for('static', filename='assets/img/logo/wildlight-studio-icon-64x64-1.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180"
+          href="{{ url_for('static', filename='assets/img/logo/wildlight-studio-icon-180x180-1.png') }}">
+
+    <!-- ==================================================
+         CSS
+    ================================================== -->
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
 </head>
@@ -22,7 +34,7 @@
     <div class="brand">
         <a href="/?lang={{ lang }}" aria-label="Wildlight Studio Costa Rica">
             <img
-                src="{{ url_for('static', filename='assets/img/logo/wildlight-studio-logo-black.webp') }}"
+                src="{{ url_for('static', filename='assets/img/logo/wildlight-studio-logo-black-F-1.png') }}"
                 alt="Wildlight Studio Costa Rica">
         </a>
     </div>
@@ -68,7 +80,7 @@
 {% block content %}{% endblock %}
 
 <!-- ==================================================
-     JAVASCRIPT (OBLIGATORIO)
+     JAVASCRIPT
 ================================================== -->
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 

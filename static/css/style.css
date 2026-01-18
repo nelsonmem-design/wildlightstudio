@@ -80,10 +80,14 @@ p {
     padding: 14px 20px;
 }
 
+/* LOGO */
 .brand img {
     height: var(--logo-desktop);
+    width: auto;
+    image-rendering: -webkit-optimize-contrast;
 }
 
+/* NAV LINKS */
 .nav-links {
     display: flex;
     align-items: center;
@@ -93,6 +97,7 @@ p {
 .nav-links a {
     font-size: 0.95rem;
     opacity: 0.9;
+    transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 .nav-links a:hover {
@@ -135,7 +140,7 @@ main {
 }
 
 /* ==================================================
-   HERO — SLIDESHOW CSS ONLY (FINAL)
+   HERO — SLIDESHOW (CSS ONLY)
 ================================================== */
 .hero {
     position: relative;
@@ -151,7 +156,6 @@ main {
     isolation: isolate;
 }
 
-/* Slides */
 .hero .slide {
     position: absolute;
     inset: 0;
@@ -165,13 +169,11 @@ main {
     z-index: -2;
 }
 
-/* Images */
 .hero .s1 { background-image: url("/static/assets/img/home/chocuaco.jpg"); animation-delay: 0s; }
 .hero .s2 { background-image: url("/static/assets/img/home/cuco-isla-coco.jpg"); animation-delay: 6s; }
 .hero .s3 { background-image: url("/static/assets/img/home/espiritu-santo.jpg"); animation-delay: 12s; }
 .hero .s4 { background-image: url("/static/assets/img/home/patas-amarillas.jpg"); animation-delay: 18s; }
 
-/* Overlay */
 .hero::before {
     content: "";
     position: absolute;
@@ -180,7 +182,6 @@ main {
     z-index: -1;
 }
 
-/* Animation */
 @keyframes heroFade {
     0%   { opacity: 0; }
     8%   { opacity: 1; }
@@ -189,7 +190,6 @@ main {
     100% { opacity: 0; }
 }
 
-/* Content */
 .hero-content {
     position: relative;
     z-index: 1;
@@ -203,7 +203,7 @@ main {
 }
 
 /* ==================================================
-   BUTTONS — UNIFICADOS (AMBOS VERDES)
+   BUTTONS
 ================================================== */
 .cta {
     display: inline-flex;
@@ -224,10 +224,7 @@ main {
 
     cursor: pointer;
 
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        background-color 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .cta:hover {
@@ -276,6 +273,21 @@ main {
 }
 
 /* ==================================================
+   GALLERIES — UNIFORM IMAGE SIZE
+================================================== */
+.gallery-card {
+    display: block;
+}
+
+.gallery-card img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    background-color: var(--bg-secondary);
+}
+
+/* ==================================================
    MOBILE
 ================================================== */
 @media (max-width: 900px) {
@@ -310,19 +322,4 @@ main {
     .contact-page {
         padding: 60px 16px 40px;
     }
-}
-/* ==================================================
-   GALLERIES — FIX UNIFORM IMAGE SIZE
-================================================== */
-
-.gallery-card {
-    display: block;
-}
-
-.gallery-card img {
-    width: 100%;
-    height: 260px;              /* ← ALTURA FIJA */
-    object-fit: cover;          /* ← CLAVE */
-    border-radius: var(--radius-md);
-    background-color: var(--bg-secondary);
 }
