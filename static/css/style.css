@@ -3,9 +3,9 @@
 ================================================== */
 :root {
     /* Brand gold */
-    --accent: #d4af37;        /* dorado principal */
-    --accent-hover: #e6c86e;  /* dorado suave */
-    --accent-dark: #b8962e;   /* dorado profundo */
+    --accent: #d4af37;
+    --accent-hover: #e6c86e;
+    --accent-dark: #b8962e;
 
     /* Backgrounds */
     --bg-main: #0b0f14;
@@ -17,7 +17,7 @@
 
     /* Logo sizes */
     --logo-desktop: 92px;
-    --logo-mobile: 76px;
+    --logo-mobile: 56px;
 
     /* Radius */
     --radius-lg: 18px;
@@ -40,6 +40,9 @@ body {
     background-color: var(--bg-main);
     color: var(--text-main);
     overflow-x: hidden;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
 img {
@@ -104,12 +107,28 @@ p {
 .nav-links a {
     font-size: 0.95rem;
     opacity: 0.85;
+    position: relative;
     transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.25s ease;
 }
 
 .nav-links a:hover {
     color: var(--accent);
     opacity: 1;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
 }
 
 .language-switch {
@@ -151,7 +170,6 @@ main {
 ================================================== */
 .hero {
     position: relative;
-    min-height: 100vh;
     overflow: hidden;
 
     display: flex;
@@ -159,6 +177,7 @@ main {
     justify-content: center;
     text-align: center;
 
+    min-height: 100vh;
     padding: 120px 20px;
     isolation: isolate;
 }
@@ -185,9 +204,10 @@ main {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        rgba(11, 15, 20, 0.65),
-        rgba(11, 15, 20, 0.55)
+    background: radial-gradient(
+        ellipse at center,
+        rgba(11, 15, 20, 0.35),
+        rgba(11, 15, 20, 0.75)
     );
     z-index: -1;
 }
@@ -213,7 +233,7 @@ main {
 }
 
 /* ==================================================
-   BUTTONS (GOLDEN CTA)
+   BUTTONS (GOLD CTA)
 ================================================== */
 .cta {
     display: inline-flex;
@@ -234,20 +254,21 @@ main {
     );
 
     color: #0b0f14;
-
     border-radius: var(--radius-sm);
     border: none;
-
     cursor: pointer;
 
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .cta:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(212, 175, 55, 0.35);
+}
+
+.cta:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
 }
 
 /* ==================================================
@@ -312,6 +333,10 @@ main {
 ================================================== */
 @media (max-width: 900px) {
 
+    .navbar {
+        padding: 10px 16px;
+    }
+
     .brand img {
         height: var(--logo-mobile);
     }
@@ -327,19 +352,39 @@ main {
         width: 100%;
 
         flex-direction: column;
-        gap: 18px;
+        gap: 16px;
 
-        background: rgba(17, 24, 39, 0.98);
-        padding: 24px 0;
+        background: rgba(11, 15, 20, 0.98);
+        padding: 20px 0 28px;
+        border-top: 1px solid rgba(212, 175, 55, 0.15);
         display: none;
+    }
+
+    .nav-links a {
+        font-size: 1rem;
     }
 
     .nav-toggle:checked ~ .nav-links {
         display: flex;
     }
 
+    .hero {
+        min-height: auto;
+        padding: 100px 16px 80px;
+    }
+
     main,
     .contact-page {
-        padding: 60px 16px 40px;
+        padding: 56px 16px 40px;
+    }
+}
+
+/* ==================================================
+   ACCESSIBILITY — REDUCED MOTION
+================================================== */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
     }
 }
