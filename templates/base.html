@@ -3,10 +3,35 @@
 <head>
     <meta charset="UTF-8">
 
-    <!-- RESPONSIVE CRÍTICO -->
+    <!-- RESPONSIVE -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- TITLE -->
     <title>{% block title %}Wildlight Studio Costa Rica{% endblock %}</title>
+
+    <!-- META DESCRIPTION (SEO) -->
+    <meta name="description"
+          content="Wildlight Studio Costa Rica – Wildlife and nature photography. Birds, landscapes and conservation images available for licensing and fine art prints.">
+
+    <!-- ==================================================
+         CANONICAL & I18N FIX (SEARCH CONSOLE)
+    ================================================== -->
+    <link rel="canonical" href="{{ request.base_url }}">
+
+    <link rel="alternate" hreflang="en" href="{{ request.base_url }}?lang=en">
+    <link rel="alternate" hreflang="es" href="{{ request.base_url }}?lang=es">
+    <link rel="alternate" hreflang="x-default" href="{{ request.base_url }}">
+
+    <!-- ==================================================
+         OPEN GRAPH (SOCIAL SHARING)
+    ================================================== -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{% block og_title %}Wildlight Studio Costa Rica{% endblock %}">
+    <meta property="og:description"
+          content="Wildlife and nature photography from Costa Rica. Birds, landscapes, conservation images and fine art prints.">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:image"
+          content="https://www.wildlightstudiocr.com/static/assets/img/logo/Photopea-wildlight-studio-logo-transparent-1.png">
 
     <!-- ==================================================
          FAVICON
@@ -33,9 +58,14 @@
       "@type": "Organization",
       "name": "Wildlight Studio Costa Rica",
       "url": "https://www.wildlightstudiocr.com",
-      "logo": "https://www.wildlightstudiocr.com/static/assets/img/logo/Photopea-wildlight-studio-logo-transparent-1.png"
+      "logo": "https://www.wildlightstudiocr.com/static/assets/img/logo/Photopea-wildlight-studio-logo-transparent-1.png",
+      "sameAs": [
+        "https://www.instagram.com/",
+        "https://www.facebook.com/"
+      ]
     }
     </script>
+
 </head>
 
 <body>
@@ -43,7 +73,7 @@
 <!-- ==================================================
      NAVBAR
 ================================================== -->
-<nav class="navbar" role="navigation">
+<nav class="navbar" role="navigation" aria-label="Primary Navigation">
 
     <div class="nav-container">
 
@@ -52,8 +82,8 @@
             <a href="/?lang={{ lang }}" aria-label="Wildlight Studio Costa Rica">
                 <img
                     src="{{ url_for('static', filename='assets/img/logo/Photopea-wildlight-studio-logo-transparent-1.png') }}"
-                    alt="Wildlight Studio Costa Rica"
-                    loading="lazy">
+                    alt="Wildlight Studio Costa Rica logo"
+                    loading="eager">
             </a>
         </div>
 
@@ -64,7 +94,8 @@
                aria-label="Toggle navigation">
 
         <!-- NAV LINKS -->
-        <div class="nav-links">
+        <div class="nav-links" id="primary-navigation">
+
             <a href="/?lang={{ lang }}">Home</a>
             <a href="/galleries?lang={{ lang }}">Galleries</a>
             <a href="/licensing?lang={{ lang }}">Licensing</a>
@@ -99,12 +130,21 @@
 <!-- ==================================================
      MAIN CONTENT
 ================================================== -->
-<main class="site-main">
+<main class="site-main" role="main">
     {% block content %}{% endblock %}
 </main>
 
 <!-- ==================================================
-     JAVASCRIPT
+     FOOTER (LISTO PARA FUTURO)
+================================================== -->
+<footer class="site-footer">
+    <p>
+        © {{ 2026 }} Wildlight Studio Costa Rica · All rights reserved
+    </p>
+</footer>
+
+<!-- ==================================================
+     JAVASCRIPT (OPCIONAL)
 ================================================== -->
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 

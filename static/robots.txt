@@ -1,4 +1,12 @@
-User-agent: *
+from flask import make_response
+
+@app.route("/robots.txt")
+def robots():
+    content = """User-agent: *
 Allow: /
 
 Sitemap: https://wildlightstudiocr.com/sitemap.xml
+"""
+    response = make_response(content)
+    response.headers["Content-Type"] = "text/plain"
+    return response
