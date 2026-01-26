@@ -6,30 +6,35 @@
     <!-- RESPONSIVE -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- TITLE -->
     <title>{% block title %}Wildlight Studio Costa Rica{% endblock %}</title>
+
+    <!-- ==================================================
+         CANONICAL & I18N (SEO FIX FINAL)
+    ================================================== -->
+    <link rel="canonical"
+          href="https://www.wildlightstudiocr.com{{ request.path }}?lang={{ lang }}">
+
+    <link rel="alternate" hreflang="en"
+          href="https://www.wildlightstudiocr.com{{ request.path }}?lang=en">
+    <link rel="alternate" hreflang="es"
+          href="https://www.wildlightstudiocr.com{{ request.path }}?lang=es">
+    <link rel="alternate" hreflang="x-default"
+          href="https://www.wildlightstudiocr.com{{ request.path }}">
 
     <!-- META DESCRIPTION (SEO) -->
     <meta name="description"
           content="Wildlight Studio Costa Rica – Wildlife and nature photography. Birds, landscapes and conservation images available for licensing and fine art prints.">
 
     <!-- ==================================================
-         CANONICAL & I18N FIX (SEARCH CONSOLE)
-    ================================================== -->
-    <link rel="canonical" href="{{ request.base_url }}">
-
-    <link rel="alternate" hreflang="en" href="{{ request.base_url }}?lang=en">
-    <link rel="alternate" hreflang="es" href="{{ request.base_url }}?lang=es">
-    <link rel="alternate" hreflang="x-default" href="{{ request.base_url }}">
-
-    <!-- ==================================================
          OPEN GRAPH (SOCIAL SHARING)
     ================================================== -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="{% block og_title %}Wildlight Studio Costa Rica{% endblock %}">
+    <meta property="og:title"
+          content="{% block og_title %}Wildlight Studio Costa Rica{% endblock %}">
     <meta property="og:description"
           content="Wildlife and nature photography from Costa Rica. Birds, landscapes, conservation images and fine art prints.">
-    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:url"
+          content="https://www.wildlightstudiocr.com{{ request.path }}?lang={{ lang }}">
     <meta property="og:image"
           content="https://www.wildlightstudiocr.com/static/assets/img/logo/Photopea-wildlight-studio-logo-transparent-1.png">
 
@@ -135,11 +140,11 @@
 </main>
 
 <!-- ==================================================
-     FOOTER (LISTO PARA FUTURO)
+     FOOTER
 ================================================== -->
 <footer class="site-footer">
     <p>
-        © {{ 2026 }} Wildlight Studio Costa Rica · All rights reserved
+        © 2026 Wildlight Studio Costa Rica · All rights reserved
     </p>
 </footer>
 
