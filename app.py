@@ -83,7 +83,6 @@ TEXTS = {
 # UTILITIES
 # ==================================================
 def get_lang():
-    """Detecta idioma y lo normaliza."""
     lang = request.args.get("lang")
 
     if lang in TEXTS:
@@ -95,11 +94,6 @@ def get_lang():
 
 
 def enforce_canonical():
-    """
-    Fuerza una única versión de URL:
-    - Quita lang inválido
-    - Agrega ?lang si falta
-    """
     lang = request.args.get("lang")
     clean_args = dict(request.args)
 
@@ -299,7 +293,6 @@ def sitemap():
             "lastmod": lastmod
         })
 
-    # Páginas principales
     for lang in TEXTS.keys():
         add_page(f"/?lang={lang}")
         add_page(f"/galleries?lang={lang}")
@@ -307,7 +300,6 @@ def sitemap():
         add_page(f"/licensing?lang={lang}")
         add_page(f"/contact?lang={lang}")
 
-    # Galerías y fotos
     for category in CATEGORIES:
         for lang in TEXTS.keys():
             add_page(f"/gallery/{category}?lang={lang}")
@@ -333,9 +325,3 @@ def page_not_found(e):
 @app.errorhandler(500)
 def server_error(e):
     return render_page("500.html"), 500
-
-# ==================================================
-# START
-# ==================================================
-if __name__ == "__main__":
-    app.run(debug=True)
